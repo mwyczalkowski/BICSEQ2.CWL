@@ -7,6 +7,7 @@ Background reading on creating mappability track:
     https://wiki.bits.vib.be/index.php/Create_a_mappability_track
 
 Note that there seems to be newer version of GEM mappability tools here: https://github.com/smarco/gem3-mapper
+
     * Yige says that it does not have some required features implemented.
 
 # V2 details
@@ -35,6 +36,7 @@ by each step
 ### Steps
 
 Steps:
+
     * Prepare dependencies
         * Obtain reference per chromosome
             * Yige uses katmai:/diskmnt/Datasets/Reference/GRCh38.d1.vd1/GRCh38.d1.vd1.fa
