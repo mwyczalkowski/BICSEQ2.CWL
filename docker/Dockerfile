@@ -74,10 +74,7 @@ RUN pip install numpy
 # Will run `python -S` to not import site data on initialization.  This is important in MGI
 ENV PYTHONPATH="/usr/local/lib/python2.7/dist-packages:/usr/lib/python2.7/dist-packages"
 
-#USER bps
-#COPY vimrc /home/bps/.vimrc
-#ENV HOME=/home/bps
-
+COPY docker/vimrc /root/.vimrc
 ENV LANG=C
 
 # set up working directory

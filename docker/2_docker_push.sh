@@ -1,3 +1,3 @@
-IMAGE="mwyczalkowski/bicseq2"
+source docker_image.sh
 docker push $IMAGE
 
