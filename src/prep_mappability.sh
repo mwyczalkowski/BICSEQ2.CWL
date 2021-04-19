@@ -31,8 +31,8 @@
 # -r REF_BASE: define alternate REF_BASE.  Default is based on filename of reference
 # -o OUT_CHR: string defining output filename, where %s is replaced by string from CHR  
 #           Default is ${REF_BASE}.${READ_LENGTH}mer.%s.txt
-# -m THREADS_INDEXER: number of threads to be used by gem-indexer [default 4] (Yige had 8)
-# -n THREADS_MAPPABILITY: number of threads to be used by gem-indexer [default 16] (Yige had 80)
+# -m THREADS_INDEXER: number of threads to be used by gem-indexer [default 4] 
+# -n THREADS_MAPPABILITY: number of threads to be used by gem-indexer [default 16] 
 
 # Memory issues:
 # Requires > 4Gb memory for GRCh38 (as set on a Mac using Docker Preferences panel); 12Gb works, but `docker stats` suggests ~7Gb is used
