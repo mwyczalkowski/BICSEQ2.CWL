@@ -6,10 +6,14 @@
 #tar -xvjf Homo_sapiens_assembly19.COST16011_region.fa.tar.bz2
 #```
 
-source project_config.demo.sh
+REF="/data/Homo_sapiens_assembly19.COST16011_region.fa"
+OUTD="/results/prep_mappability"
+
+# Reference base name
+CHRLIST="/BICSEQ2/testing/test_data/chromosomes.8.11.dat"
 
 # process test data
-bash /BICSEQ2/src/make_mappability.sh $REF $MAPD $CHRLIST
+bash /BICSEQ2/src/prep_mappability.sh $REF $OUTD $CHRLIST
 
 # *TODO* be able to test GRCh38 with project_config.sh
 # Note that it failed to run, see README.md for output

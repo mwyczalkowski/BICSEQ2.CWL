@@ -1,8 +1,18 @@
-# BIC-Seq2
+# BICseq2
 
-BICSEQ2 pipeline, version 2.0
+[BICseq2 CWL pipeline](https://github.com/mwyczalkowski/BICSEQ2.git), version 2.5
 
-## Processing description
+Based on BICSeq tools:
+  * NBICseq-norm_v0.2.4
+  * NBICseq-seg_v0.7.2
+  * samtools-0.1.7a_getUnique-0.1.3
+  * GEM-binaries-Linux-x86_64-core_i3-20130406-045632
+
+## Versions
+
+v2.5 - CWL implementation.  Underlying libraries unchanged from v2.0
+
+# Processing description
 We used BIC-seq2 (Xi et al., 2016), a read-depth-based CNV calling algorithm to
 detect somatic copy number variation (CNVs) from the WGS data of tumors.
 Briefly, BIC-seq2 divides genomic regions into disjoint bins and counts
@@ -18,9 +28,6 @@ segmentation). We recommend to call segments as copy gain or loss when their
 log2 copy ratios were larger than 0.2 or smaller than −0.2, respectively
 (according to the BIC-seq publication).
 
-## Processing pipeline
-This is a docker implementation.
-Github: https://github.com/mwyczalkowski/BICSEQ2.git
 
 ## Input data
 
