@@ -15,6 +15,8 @@
 
 ## the path to the samtools getUnique helper script
 SAMTOOLS_GU="/samtools-0.1.7a_getUnique-0.1.3/misc/samtools.pl"
+SAMTOOLS="/usr/bin/samtools"
+PERL="/usr/bin/perl"
 source /BICSEQ2/src/utils.sh
 
 SCRIPT=$(basename $0)
@@ -62,22 +64,11 @@ if [ ! -e $BAM ]; then
     exit 1
 fi
 
-function test_exit_status {
-    # Evaluate return value for chain of pipes; see https://stackoverflow.com/questions/90418/exit-shell-script-based-on-process-exit-code
-    rcs=${PIPESTATUS[*]};
-    for rc in ${rcs}; do
-        if [[ $rc != 0 ]]; then
-            >&2 echo $SCRIPT Fatal ERROR.  Exiting.
-            exit $rc;
-        fi;
-    done
-}
-
 function process_BAM {
     BAM=$1
 
     NOW=$(date)
-    CMD="samtools view $BAM $CHR | perl $SAMTOOLS_GU unique - | cut -f 4 > $OUTFN"
+    CMD="$SAMTOOLS view $BAM $CHR | $PERL $SAMTOOLS_GU unique - | cut -f 4 > $OUTFN"
 
     if [ -e $OUTFN ]; then
         if [ $FORCE_OVERWRITE ]; then
@@ -97,7 +88,6 @@ function process_BAM {
     fi
 }
 
->&2 echo Processing BAM singly
 process_BAM $BAM
 
 >&2 echo SUCCESS
