@@ -9,13 +9,13 @@
 
 # Options:
 # -d : dry-run. Print commands but do not execute them
-# -1 : stop after one.  If CHRLIST defined, launch only one job and proceed
 # -c CHR: Genomic region, e.g., "chr1".  Default is to process all chromosomes at once.  
 # -f : Force overwrite if .seq files exist
 # -o OUTFN: output filename.  Default is unique.seq
 
 ## the path to the samtools getUnique helper script
 SAMTOOLS_GU="/samtools-0.1.7a_getUnique-0.1.3/misc/samtools.pl"
+source /BICSEQ2/src/utils.sh
 
 SCRIPT=$(basename $0)
 
@@ -30,10 +30,6 @@ while getopts ":d1c:fo:" opt; do
       ;;
     c) 
       CHR=$OPTARG
-      ;;
-    1) 
-      >&2 echo "Will stop after one element of CHRLIST" 
-      JUSTONE=1
       ;;
     f) 
       FORCE_OVERWRITE=1

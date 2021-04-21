@@ -7,7 +7,7 @@
 #```
 
 REF="/data/Homo_sapiens_assembly19.COST16011_region.fa"
-OUTD="/results/prep_mappability"
+OUTD="/results/mappability"
 
 # Reference base name
 CHRLIST="/BICSEQ2/testing/test_data/chromosomes.8.11.dat"

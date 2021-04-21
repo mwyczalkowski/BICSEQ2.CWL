@@ -39,14 +39,15 @@ Steps:
 
     * Prepare dependencies
         * Obtain reference per chromosome
-            * Yige uses katmai:/diskmnt/Datasets/Reference/GRCh38.d1.vd1/GRCh38.d1.vd1.fa
-            * per-chrom hg38 is downloaded from http://hgdownload.cse.ucsc.edu/goldenPath/hg38/chromosomes/
-            * Output / reference directory is $REFD
-            * Not currently automated
+            * This can be downloaded, or written by parsing the all-chromosome reference file.  For instance,
+              extract chromosome 1 FASTA from reference GRCh38.d1.vd1.fa with,
+                ```
+                sed -ne '/>chr1 /,/>/ p' GRCh38.d1.vd1.fa | head -n -1 > chr1.fa
+                ```
         * `prep_mappability.sh` generates mapping files
             * specific to reference
             * dependent on read length (150 currently used)
-            * Takes long time to run.  Can use cached results XXX *TODO*
+            * Can take long time to run
             * Example filename: GRCh38.d1.vd1.150mer.chr1.txt
             * Output / mappability directory is $MAPD
         * `prep_gene_annotation.sh` generates annotation bed files

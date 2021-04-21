@@ -21,6 +21,8 @@ Datasets we use currently:
 * Demo dataset - small tumor / normal BAM file pair and reference, from distribution of Manta
   * https://github.com/ding-lab/SomaticSV/tree/master/testing/demo_data
   * storage1:/storage1/fs1/home1/Active/home/m.wyczalkowski/Projects/BICseq2/demo_data
+  * tumor (G15512.HCC1954.1.COST16011_region.bam) and normal (HCC1954.NORMAL.30x.compare.COST16011_region.bam)
+    have thousands and hundreds of reads, respectively, on chromosomes 8 and 11
 
 * C3L-00008 chr18-20 - several chromosomes of specific dataset.  Hosted on katmai and MGI. hg38
 * C3L-00008 - complete dataset from CPTAC3 project. hg38

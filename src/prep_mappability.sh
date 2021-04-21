@@ -37,18 +37,8 @@
 # Memory issues:
 # Requires > 4Gb memory for GRCh38 (as set on a Mac using Docker Preferences panel); 12Gb works, but `docker stats` suggests ~7Gb is used
 
-# Note that project_config file is not read here; rather, relevant parameters passed directly.  
-
-function test_exit_status {
-    # Evaluate return value for chain of pipes; see https://stackoverflow.com/questions/90418/exit-shell-script-based-on-process-exit-code
-    rcs=${PIPESTATUS[*]};
-    for rc in ${rcs}; do
-        if [[ $rc != 0 ]]; then
-            >&2 echo Fatal ERROR.  Exiting.
-            exit $rc;
-        fi;
-    done
-}
+source /BICSEQ2/src/utils.sh
+GEMD="/usr/local/bin"   # location GEM packages installed
 
 # Set defaults
 THREADS_INDEXER=4  # Yige had 8
@@ -141,7 +131,7 @@ cd $OUTD
 NOW=$(date)
 >&2 echo [ $NOW ]
 >&2 echo "  ** Running gem-indexer **"
-CMD="gem-indexer -i $REF -o $OUTD/$REF_BASE -T $THREADS_INDEXER"
+CMD="$GEMD/gem-indexer -i $REF -o $OUTD/$REF_BASE -T $THREADS_INDEXER"
 >&2 echo $CMD
 >&2 eval $CMD
 test_exit_status
@@ -151,7 +141,7 @@ test_exit_status
 NOW=$(date)
 >&2 echo [ $NOW ]
 >&2 echo "      ** Running gem-mappability **"
-CMD="gem-mappability -m 2 -I $OUTD/${REF_BASE}.gem -l ${READ_LENGTH} -o $OUTD/$MER -T $THREADS_MAPPABILITY &> $OUTD/$MER.mappability.log"
+CMD="$GEMD/gem-mappability -m 2 -I $OUTD/${REF_BASE}.gem -l ${READ_LENGTH} -o $OUTD/$MER -T $THREADS_MAPPABILITY &> $OUTD/$MER.mappability.log"
 >&2 echo $CMD
 >&2 eval $CMD
 test_exit_status
@@ -160,7 +150,7 @@ test_exit_status
 NOW=$(date)
 >&2 echo [ $NOW ]
 >&2 echo "      ** Running gem-2-wig **"
-CMD="gem-2-wig -I $OUTD/${REF_BASE}.gem -i $OUTD/$MER.mappability -o $MER"
+CMD="$GEMD/gem-2-wig -I $OUTD/${REF_BASE}.gem -i $OUTD/$MER.mappability -o $MER"
 >&2 echo $CMD
 >&2 eval $CMD
 test_exit_status
@@ -171,7 +161,7 @@ test_exit_status
 NOW=$(date)
 >&2 echo [ $NOW ]
 >&2 echo "      ** Running wigToBigWig **"
-CMD="wigToBigWig $OUTD/$MER.wig $OUTD/$MER.sizes $OUTD/$MER.bw"
+CMD="$GEMD/wigToBigWig $OUTD/$MER.wig $OUTD/$MER.sizes $OUTD/$MER.bw"
 >&2 echo $CMD
 >&2 eval $CMD
 test_exit_status
@@ -180,7 +170,7 @@ test_exit_status
 NOW=$(date)
 >&2 echo [ $NOW ]
 >&2 echo "      ** Running bigWigToBedGraph **"
-CMD="bigWigToBedGraph $OUTD/$MER.bw $OUTD/$MER.bedGraph"
+CMD="$GEMD/bigWigToBedGraph $OUTD/$MER.bw $OUTD/$MER.bedGraph"
 >&2 echo $CMD
 >&2 eval $CMD
 test_exit_status

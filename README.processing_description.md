@@ -8,6 +8,9 @@ Based on BICSeq tools:
   * samtools-0.1.7a_getUnique-0.1.3
   * GEM-binaries-Linux-x86_64-core_i3-20130406-045632
 
+Gene annotation based on GENCODE release 29
+
+
 ## Versions
 
 v2.5 - CWL implementation.  Underlying libraries unchanged from v2.0

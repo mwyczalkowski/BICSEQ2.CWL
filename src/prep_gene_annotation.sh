@@ -23,16 +23,7 @@
 # Checks to see if output file exists before overwriting
 #   Option to force overwrite even if output exists
 
-function test_exit_status {
-    # Evaluate return value for chain of pipes; see https://stackoverflow.com/questions/90418/exit-shell-script-based-on-process-exit-code
-    rcs=${PIPESTATUS[*]};
-    for rc in ${rcs}; do
-        if [[ $rc != 0 ]]; then
-            >&2 echo Fatal ERROR.  Exiting.
-            exit $rc;
-        fi;
-    done
-}
+source /BICSEQ2/src/utils.sh
 
 # http://wiki.bash-hackers.org/howto/getopts_tutorial
 while getopts ":dn" opt; do
@@ -91,22 +82,15 @@ else
     test_exit_status
 fi
 
-
-# Past data:
-# 
-# GFF_URL=ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/gencode.v29.annotation.gff3.gz
-# ## the filename of the gene annotation GFF3 file
-# geneAnnoGFF3File=gencode.v29.annotation.gff3
-# ## the filename of the gene annotation bed file
-# geneAnnoBedFile=gencode.v29.annotation.hg38.p12.bed
-# path: /diskmnt/Projects/CPTAC3CNV/gatk4wxscnv/inputs
-
-PATH="$PATH:/bedops/bin"
 >&2 echo Processing $GFF
+
+# this needs to be in path so sort-bed found
+BEDOPSD="/bedops/bin"
+PATH="$PATH:$BEDOPSD"
 
 # Yige update 1/5/19
 # cat ${inputDir}${geneAnnoGFF3File} | awk '$3=="gene"' | grep protein_coding | convert2bed -i gff - | cut -f 1,2,3,10 | awk -F ';|\\t' '{print $1,$2,$3,$7}' | awk -F ' |\\=' '{print $1,$2,$3,$5}' OFS='\t' > ${inputDir}${geneAnnoBedFile}
-CMD="zcat $GFF | awk '\$3==\"gene\"' | grep protein_coding | convert2bed -i gff - | cut -f 1,2,3,10 | awk -F ';|\\t' '{print \$1,\$2,\$3,\$7}' | awk -F ' |\\=' '{print \$1,\$2,\$3,\$5}' OFS='\t' > $BED_OUT"
+CMD="zcat $GFF | awk '\$3==\"gene\"' | grep protein_coding | $BEDOPSD/convert2bed -i gff - | cut -f 1,2,3,10 | awk -F ';|\\t' '{print \$1,\$2,\$3,\$7}' | awk -F ' |\\=' '{print \$1,\$2,\$3,\$5}' OFS='\t' > $BED_OUT"
 if [ $DRYRUN ]; then
     >&2 echo Dryrun: $CMD
 else
