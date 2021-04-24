@@ -11,7 +11,7 @@
 # -d : dry-run. Print commands but do not execute them
 # -c CHR: Genomic region, e.g., "chr1".  Default is to process all chromosomes at once.  
 # -f : Force overwrite if .seq files exist
-# -o OUTFN: output filename.  Default is unique.seq
+# -o OUTFN: output filename.  Default is unique.seq if CHR is not specified, CHR.unique.seq if it is
 
 ## the path to the samtools getUnique helper script
 SAMTOOLS_GU="/samtools-0.1.7a_getUnique-0.1.3/misc/samtools.pl"
@@ -21,7 +21,6 @@ source /BICSEQ2/src/utils.sh
 
 SCRIPT=$(basename $0)
 
-OUTFN="./unique.seq"
 
 # http://wiki.bash-hackers.org/howto/getopts_tutorial
 while getopts ":d1c:fo:" opt; do
@@ -50,6 +49,14 @@ while getopts ":d1c:fo:" opt; do
   esac
 done
 shift $((OPTIND-1))
+
+if [ -z $OUTFN ]; then
+    if [ ! -z $CHR ]; then
+        OUTFN="./$CHR.unique.seq"
+    else
+        OUTFN="./unique.seq"
+    fi
+fi
 
 if [ "$#" -ne 1 ]; then
     >&2 echo ERROR: Wrong number of arguments
