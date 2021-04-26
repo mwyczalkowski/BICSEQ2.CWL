@@ -15,6 +15,9 @@ CHRLIST="/BICSEQ2/testing/test_data/chromosomes.8.11.dat"
 # process test data
 bash /BICSEQ2/src/prep_mappability.sh $REF $OUTD $CHRLIST
 
+# Now make compressed version of this for use in staging
+
+
 # *TODO* be able to test GRCh38 with project_config.sh
 # Note that it failed to run, see README.md for output
 # GRCh38
