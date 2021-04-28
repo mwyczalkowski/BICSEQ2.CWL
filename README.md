@@ -1,7 +1,19 @@
 # Background
 
-BIC-Seq2 details: http://compbio.med.harvard.edu/BIC-seq/
+BIC-Seq2 details: formerly here: http://compbio.med.harvard.edu/BIC-seq/
+
+BICseq2 is now available at 
+   https://www.math.pku.edu.cn/teachers/xirb/downloads/software/BICseq2/BICseq2.html 
+
+
 BICSEQ2 V1 Ding Lab github project: https://github.com/ding-lab/BICSEQ2
+
+Based on BICSeq tools:
+  * NBICseq-norm_v0.2.4
+  * NBICseq-seg_v0.7.2
+  * samtools-0.1.7a_getUnique-0.1.3
+  * GEM-binaries-Linux-x86_64-core_i3-20130406-045632
+
 
 Background reading on creating mappability track:
     https://wiki.bits.vib.be/index.php/Create_a_mappability_track
@@ -42,14 +54,20 @@ Steps:
             * This can be downloaded, or written by parsing the all-chromosome reference file.  For instance,
               extract chromosome 1 FASTA from reference GRCh38.d1.vd1.fa with,
                 ```
-                sed -ne '/>chr1 /,/>/ p' GRCh38.d1.vd1.fa | head -n -1 > chr1.fa
+                sed -ne '/>chr1/,/>/ p' GRCh38.d1.vd1.fa | head -n -1 > chr1.fa
                 ```
+            * After they are extracted, per-chrom reference files can be compressed (tar -zcf) into one
+              file and passed as an argument
         * `prep_mappability.sh` generates mapping files
             * specific to reference
             * dependent on read length (150 currently used)
             * Can take long time to run
             * Example filename: GRCh38.d1.vd1.150mer.chr1.txt
-            * Output / mappability directory is $MAPD
+                * here, MER=GRCh38.d1.vd1.150mer
+            * Output / mappability directory is $MAPD/$MER
+            * After they are extracted, per-chrom mappability files can be compressed (tar -xvf) into one
+              file and to be passed as an argument for later processing.  Example command,
+                * cd $MAPD && tar -zcf $MER ${MER}.tar.gz
         * `prep_gene_annotation.sh` generates annotation bed files
             * Based on gencode GFF file
     * Per sample

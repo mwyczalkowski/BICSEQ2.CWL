@@ -12,18 +12,19 @@
 # -c CHR: Genomic region, e.g., "chr1".  Default is to process all chromosomes at once.  
 # -f : Force overwrite if .seq files exist
 # -o OUTFN: output filename.  Default is unique.seq if CHR is not specified, CHR.unique.seq if it is
+# -O OUTD: output directory, default ".".  Specifying OUTFN overrides OUTD
 
 ## the path to the samtools getUnique helper script
 SAMTOOLS_GU="/samtools-0.1.7a_getUnique-0.1.3/misc/samtools.pl"
 SAMTOOLS="/usr/bin/samtools"
 PERL="/usr/bin/perl"
 source /BICSEQ2/src/utils.sh
+OUTD="."
 
 SCRIPT=$(basename $0)
 
-
 # http://wiki.bash-hackers.org/howto/getopts_tutorial
-while getopts ":d1c:fo:" opt; do
+while getopts ":d1c:fo:O:" opt; do
   case $opt in
     d)  # example of binary argument
       >&2 echo "Dry run" 
@@ -37,6 +38,9 @@ while getopts ":d1c:fo:" opt; do
       ;;
     o) 
       OUTFN=$OPTARG
+      ;;
+    O) 
+      OUTD=$OPTARG
       ;;
     \?)
       >&2 echo "$SCRIPT: ERROR: Invalid option: -$OPTARG"
@@ -52,9 +56,9 @@ shift $((OPTIND-1))
 
 if [ -z $OUTFN ]; then
     if [ ! -z $CHR ]; then
-        OUTFN="./$CHR.unique.seq"
+        OUTFN="$OUTD/$CHR.unique.seq"
     else
-        OUTFN="./unique.seq"
+        OUTFN="$OUTD/unique.seq"
     fi
 fi
 
