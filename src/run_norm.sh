@@ -24,7 +24,7 @@
 #   -m MER: Base name for mappability files.  Example: GRCh38.d1.vd1.150mer  Required
 #       Traditionally, MER=${REFNAM}.${READ_LENGTH}mer
 #   -M MAPD: path to mappability files, or compressed file which contains these.  
-#       Assume per-chrom mappability files are in directory MAPD/MER/MER.CHR.txt. Required
+#       Assume per-chrom mappability files are in directory MAPD/MER.CHR.txt. Required
 #   -F: Remove $OUTD/mappability and $OUTD/reference directories if they were created
 # Parameters used by BICSEQ_NORM
 #   -r READ_LENGTH.  Default 150
@@ -197,7 +197,7 @@ MAPD=$(extract_tarball $MAP_ARG $MAPD_DEFAULT)
 # Assumed per-chrom FASTA installed in same directory as $REF
 FA_CHR="${REFD}/%s.fa"
 
-MAP_CHR="$MAPD/$MER/$MER.%s.txt"
+MAP_CHR="$MAPD/$MER/${MER}.%s.txt"
 
 OUTPARS="$RESULTSD/${SAMPLE_NAME}.out.txt"
 PDF="$RESULTSD/${SAMPLE_NAME}.GC.pdf"
