@@ -4,7 +4,7 @@
 # Yige Wu <yigewu@wustl.edu>
 # https://dinglab.wustl.edu/
 
-# Create normalization configuration file and run BICSeq normalization on all chromsomes
+# Create normalization configuration file and run BICSeq normalization on all chromosomes
 # Usage:
 #   bash run_norm.sh [options] SEQ1 [SEQ2 ...]
 #   SEQ (SEQLIST) is list of results of get_unique.sh output. Chromosome is obtained from input filenames
@@ -121,8 +121,6 @@ while getopts ":vwdc:R:M:C:o:m:s:Fr:f:b:X:" opt; do
   esac
 done
 shift $((OPTIND-1))
-
-
 
 # In general, we iterate over list of provided results (SEQLIST) and extract chromosome name from it
 # with the assumption that filename is CHR.unique.seq.  Alternatively, if CHRLIST is provided, we will
