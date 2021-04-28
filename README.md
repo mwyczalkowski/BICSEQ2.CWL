@@ -1,7 +1,19 @@
 # Background
 
-BIC-Seq2 details: http://compbio.med.harvard.edu/BIC-seq/
+BIC-Seq2 details: formerly here: http://compbio.med.harvard.edu/BIC-seq/
+
+BICseq2 is now available at 
+   https://www.math.pku.edu.cn/teachers/xirb/downloads/software/BICseq2/BICseq2.html 
+
+
 BICSEQ2 V1 Ding Lab github project: https://github.com/ding-lab/BICSEQ2
+
+Based on BICSeq tools:
+  * NBICseq-norm_v0.2.4
+  * NBICseq-seg_v0.7.2
+  * samtools-0.1.7a_getUnique-0.1.3
+  * GEM-binaries-Linux-x86_64-core_i3-20130406-045632
+
 
 Background reading on creating mappability track:
     https://wiki.bits.vib.be/index.php/Create_a_mappability_track
