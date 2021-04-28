@@ -1,10 +1,10 @@
 FROM ubuntu:latest
 
 # This is Dockerfile associated with docker image mwyczalkowski/bicseq2:201901
-# Note that as of April 2021 compbio.med.harvard.edu is not available.
-# BICseq2 is available at the URL below, but the versions are slightly different
-#   https://www.math.pku.edu.cn/teachers/xirb/downloads/software/BICseq2/BICseq2.html - see here since compbio.med.harvard.edu is down
-# As a result, future builds will be based on mwyczalkowski/bicseq2:201901 to preserve backward compatibility of the pipeline
+# Note that as of April 2021 http://compbio.med.harvard.edu/BIC-seq is not available.
+# BICseq2 may available at the URL below
+#   https://www.math.pku.edu.cn/teachers/xirb/downloads/software/BICseq2/BICseq2.html 
+# Future builds will be based on mwyczalkowski/bicseq2:201901 to preserve backward compatibility of the pipeline
 
 LABEL authors="Matt Wyczalkowski <m.wyczalkowski@wustl.edu>, Yige Wu <yigewu@wustl.edu>" 
 
