@@ -10,7 +10,6 @@ ENV LC_ALL en_US.UTF-8
 
 # Change permissions for a few additional scripts
 RUN cd /NBICseq-seg_v0.7.2 \
-    && chmod 755 BICseqOneSample.pl BICseqMulSample.pl
-
+    && chmod 755 BICseqOneSample.pl BICseqMulSample.pl EstimateLambdaFactor
 
 CMD ["/bin/bash"]
