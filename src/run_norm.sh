@@ -4,7 +4,7 @@
 # Yige Wu <yigewu@wustl.edu>
 # https://dinglab.wustl.edu/
 
-# Create normalization configuration file and run BICSeq normalization on all chromsomes
+# Create normalization configuration file and run BICSeq normalization on all chromosomes
 # Usage:
 #   bash run_norm.sh [options] SEQ1 [SEQ2 ...]
 #   SEQ (SEQLIST) is list of results of get_unique.sh output. Chromosome is obtained from input filenames
@@ -24,8 +24,9 @@
 #   -m MER: Base name for mappability files.  Example: GRCh38.d1.vd1.150mer  Required
 #       Traditionally, MER=${REFNAM}.${READ_LENGTH}mer
 #   -M MAPD: path to mappability files, or compressed file which contains these.  
-#       Assume per-chrom mappability files are in directory MAPD/MER/MER.CHR.txt. Required
+#       Assume per-chrom mappability files are in directory MAPD/MER.CHR.txt. Required
 #   -F: Remove $OUTD/mappability and $OUTD/reference directories if they were created
+#   -X XARGS: arguments to be passed directly to NBICseq-norm.pl
 # Parameters used by BICSEQ_NORM
 #   -r READ_LENGTH.  Default 150
 #   -f FRAG_SIZE.  Default 350
@@ -61,7 +62,7 @@ SCRIPT=$(basename $0)
 
 OUTD="./norm"
 # http://wiki.bash-hackers.org/howto/getopts_tutorial
-while getopts ":vwdc:R:M:C:o:m:s:Fr:f:b:" opt; do
+while getopts ":vwdc:R:M:C:o:m:s:Fr:f:b:X:" opt; do
   case $opt in
     v)  
       VERBOSE=1
@@ -106,6 +107,9 @@ while getopts ":vwdc:R:M:C:o:m:s:Fr:f:b:" opt; do
     b) 
       BIN_SIZE=$OPTARG
       ;;
+    X) 
+      XARGS="$OPTARG"
+      ;;
     \?)
       >&2 echo "$SCRIPT: ERROR: Invalid option: -$OPTARG"
       exit 1
@@ -117,8 +121,6 @@ while getopts ":vwdc:R:M:C:o:m:s:Fr:f:b:" opt; do
   esac
 done
 shift $((OPTIND-1))
-
-
 
 # In general, we iterate over list of provided results (SEQLIST) and extract chromosome name from it
 # with the assumption that filename is CHR.unique.seq.  Alternatively, if CHRLIST is provided, we will
@@ -197,7 +199,7 @@ MAPD=$(extract_tarball $MAP_ARG $MAPD_DEFAULT)
 # Assumed per-chrom FASTA installed in same directory as $REF
 FA_CHR="${REFD}/%s.fa"
 
-MAP_CHR="$MAPD/$MER/$MER.%s.txt"
+MAP_CHR="$MAPD/$MER/${MER}.%s.txt"
 
 OUTPARS="$RESULTSD/${SAMPLE_NAME}.out.txt"
 PDF="$RESULTSD/${SAMPLE_NAME}.GC.pdf"
@@ -249,7 +251,7 @@ else
     confirm $NORM_CONFIG
 fi
 
-CMD="$PERL $BICSEQ_NORM --tmp=$TMPD -l $READ_LENGTH -s $FRAG_SIZE -b $BIN_SIZE --fig $PDF $NORM_CONFIG $OUTPARS"
+CMD="$PERL $BICSEQ_NORM $XARGS --tmp=$TMPD -l $READ_LENGTH -s $FRAG_SIZE -b $BIN_SIZE --fig $PDF $NORM_CONFIG $OUTPARS"
 if [ $DRYRUN ]; then
     >&2 echo Dry run: $CMD
 else
