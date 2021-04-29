@@ -15,6 +15,7 @@
 # -o OUTD: output directory.  Defalt is ./annotation
 # -G GENE_BED: gene annotation bed file, created by prep_gene_annotation step (specific to ensembl build)
 #    Required
+# -C: process data for case-only segmentation mode.  Default is case-control.
 #
 # Input:
 #  * .cnv file output by run_segmentation step
@@ -29,7 +30,7 @@ OUTD="./annotation"
 CASE_NAME="case"
 
 # http://wiki.bash-hackers.org/howto/getopts_tutorial
-while getopts ":do:G:s:" opt; do
+while getopts ":do:G:s:C" opt; do
   case $opt in
     d)  
       DRYRUN=1
@@ -42,6 +43,9 @@ while getopts ":do:G:s:" opt; do
       ;;
     s) 
       CASE_NAME=$OPTARG
+      ;;
+    C)  
+      CASE_ONLY=1
       ;;
     \?)
       >&2 echo "$SCRIPT: ERROR: Invalid option: -$OPTARG"
@@ -76,12 +80,18 @@ fi
 
 GL_OUT="$OUTD/${CASE_NAME}.gene_level.log2.seg"
 
+# The data format for CASE_ONLY and case/control is different
+if [ $CASE_ONLY ]; then
+    CUT="cut -f1,2,3,7"
+else
+    CUT="cut -f1,2,3,9"
+fi
 
 # -S prevents site packages from loading, important at MGI
 # PYTHONPATH defines additional library paths.  MGI doesn't seem to respect environment variables from Dockerfile ?
 PYTHON="/usr/bin/python -S"
 export PYTHONPATH="/usr/local/lib/python2.7/dist-packages:/usr/lib/python2.7/dist-packages:$PYTHONPATH"
-CMD="sed '1d' $CNV | cut -f1,2,3,9 | /usr/bin/bedtools intersect -loj -a $GENE_BED -b - | $PYTHON /BICSEQ2/src/gene_segment_overlap.py > $GL_OUT"
+CMD="sed '1d' $CNV | $CUT | /usr/bin/bedtools intersect -loj -a $GENE_BED -b - | $PYTHON /BICSEQ2/src/gene_segment_overlap.py > $GL_OUT"
 
 #>&2 echo testing python...
 #CMD="python -S -c \"import sys;print(sys.path)\" "
