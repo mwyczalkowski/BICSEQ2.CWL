@@ -7,49 +7,41 @@
 ## get gene-level copy number values for given case
 #
 # Usage:
-#   bash run_annotation.sh [options] CASE_NAME PROJECT_CONFIG
-#
-# CASE_NAME is as used for run_segmenation step; refers to common origin of tumor/normal samples
+#   bash run_annotation.sh [options] CNV
 #
 # Options:
 # -d: dry run: print command but do not execute
-# -o OUTD_BASE: set output base root directory.  Defalt is /data1
+# -s CASE_NAME: Name for this case (patient)  Default: case
+# -o OUTD: output directory.  Defalt is ./annotation
+# -G GENE_BED: gene annotation bed file, created by prep_gene_annotation step (specific to ensembl build)
+#    Required
 #
 # Input:
 #  * .cnv file output by run_segmentation step
-#  * gene annotation bed file, created by prep_gene_annotation step (specific to ensembl build)
 # 
 # Output:
 #  * Gene level CNV file like CASE.gene_level.log2.seg, written to annotation directory
 
-# Previous data on Katmai
-# detectDir: /diskmnt/Projects/CPTAC3CNV/BICSEQ2/outputs/BICSEQ2.UCEC.hg38.121/run_detect/lambda3
-# outputPath: /diskmnt/Projects/CPTAC3CNV/BICSEQ2/outputs/BICSEQ2.UCEC.hg38.121/get_gene_level_cnv
-
 SCRIPT=$(basename $0)
+source /BICSEQ2/src/utils.sh
 
-# Defaults
-OUTD_BASE="/data1"
-
-function test_exit_status {
-    # Evaluate return value for chain of pipes; see https://stackoverflow.com/questions/90418/exit-shell-script-based-on-process-exit-code
-    rcs=${PIPESTATUS[*]};
-    for rc in ${rcs}; do
-        if [[ $rc != 0 ]]; then
-            >&2 echo $SCRIPT: Fatal ERROR.  Exiting.
-            exit $rc;
-        fi;
-    done
-}
+OUTD="./annotation"
+CASE_NAME="case"
 
 # http://wiki.bash-hackers.org/howto/getopts_tutorial
-while getopts ":do:" opt; do
+while getopts ":do:G:s:" opt; do
   case $opt in
     d)  
       DRYRUN=1
       ;;
     o) 
-      OUTD_BASE=$OPTARG
+      OUTD=$OPTARG
+      ;;
+    G) 
+      GENE_BED=$OPTARG
+      ;;
+    s) 
+      CASE_NAME=$OPTARG
       ;;
     \?)
       >&2 echo "$SCRIPT: ERROR: Invalid option: -$OPTARG"
@@ -63,60 +55,38 @@ while getopts ":do:" opt; do
 done
 shift $((OPTIND-1))
 
-if [ "$#" -ne 2 ]; then
-    >&2 echo ERROR: Wrong number of arguments
-    >&2 echo Usage:
-    >&2 echo bash run_annotation.sh \[options\] CASE_NAME PROJECT_CONFIG
+CNV=$1
+
+if [ -z $GENE_BED ]; then
+    >&2 echo ERROR: Gene annotation file \[-g\] not defined
     exit 1
 fi
-
-CASE_NAME=$1
-PROJECT_CONFIG=$2
-
-if [ ! -e $PROJECT_CONFIG ]; then
-    >&2 echo ERROR: Project configuration file $PROJECT_CONFIG not found
-    exit 1
-fi
-
-# Note, OUTD_BASE must be defined prior to sourcing $PROJECT_CONFIG
->&2 echo Reading $PROJECT_CONFIG
-source $PROJECT_CONFIG
-
 if [ ! -e $GENE_BED ]; then
     >&2 echo ERROR: Gene annotation file $GENE_BED not found
     exit 1
 fi
 
 # Output, tmp, and log files go here
-# Note that ANND is set in project_config, but OUTD_BASE is set here.
-OUTD=$ANND
 mkdir -p $OUTD
-
-CNV=$(printf $SEG_CNV $CASE_NAME)
-GL_OUT=$(printf $GL_CASE $CASE_NAME)
 
 if [ ! -e $CNV ]; then
     >&2 echo ERROR: CNV input file $CNV not found
     exit 1
 fi
 
+GL_OUT="$OUTD/${CASE_NAME}.gene_level.log2.seg"
+
+
 # -S prevents site packages from loading, important at MGI
 # PYTHONPATH defines additional library paths.  MGI doesn't seem to respect environment variables from Dockerfile ?
 PYTHON="/usr/bin/python -S"
 export PYTHONPATH="/usr/local/lib/python2.7/dist-packages:/usr/lib/python2.7/dist-packages:$PYTHONPATH"
-CMD="sed '1d' $CNV | cut -f1,2,3,9 | /usr/bin/bedtools intersect -loj -a $GENE_BED -b - | $PYTHON $SRCD/gene_segment_overlap.py > $GL_OUT"
+CMD="sed '1d' $CNV | cut -f1,2,3,9 | /usr/bin/bedtools intersect -loj -a $GENE_BED -b - | $PYTHON /BICSEQ2/src/gene_segment_overlap.py > $GL_OUT"
 
 #>&2 echo testing python...
 #CMD="python -S -c \"import sys;print(sys.path)\" "
 
-if [ $DRYRUN ]; then
-    >&2 echo Dry run: $CMD
-else
-    >&2 echo Running: $CMD
-    eval $CMD
-    test_exit_status
-    >&2 echo Written to $GL_OUT
-fi
+run_cmd "$CMD" $DRYRUN
 
 >&2 echo SUCCESS
 
