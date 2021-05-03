@@ -20,6 +20,8 @@ inputs:
     inputBinding:
       position: 99
     label: Input BAM file
+    secondaryFiles:
+      - .bai
 outputs:
   - id: seq
     type: File?
@@ -27,7 +29,7 @@ outputs:
       glob: '*unique.seq'
 label: UniqueReads
 requirements:
-  - class: DockerRequirement
-    dockerPull: 'mwyczalkowski/bicseq2:20210416'
   - class: ResourceRequirement
     ramMin: 8000
+  - class: DockerRequirement
+    dockerPull: 'mwyczalkowski/bicseq2:20210416'
