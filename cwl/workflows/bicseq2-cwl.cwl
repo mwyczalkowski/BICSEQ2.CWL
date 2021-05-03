@@ -2,46 +2,24 @@ class: Workflow
 cwlVersion: v1.0
 id: bicseq2_cwl
 label: BICseq2.cwl
-$namespaces:
-  sbg: 'https://www.sevenbridges.com/'
 inputs:
   - id: BAM
     type: File
-    'sbg:x': -677.6011352539062
-    'sbg:y': -125
   - id: REF
     type: File
-    'sbg:x': -657
-    'sbg:y': 78
   - id: MAP
     type: File
-    'sbg:x': -397.60113525390625
-    'sbg:y': 258
   - id: GENE_BED
     type: File
-    'sbg:x': 139.39886474609375
-    'sbg:y': -224
   - id: chr_list
     type: 'string[]'
-    'sbg:x': -799.078125
-    'sbg:y': -323.5
   - id: MER
     type: string?
-    'sbg:x': -623
-    'sbg:y': 236
 outputs:
-  - id: PNG
-    outputSource:
-      - segmentation/PNG
-    type: File?
-    'sbg:x': 189
-    'sbg:y': -382
   - id: annotated_cnv
     outputSource:
       - annotation/annotated_cnv
     type: File
-    'sbg:x': 356.39886474609375
-    'sbg:y': -72
 steps:
   - id: uniquereads
     in:
@@ -56,8 +34,6 @@ steps:
     scatter:
       - chr
     scatterMethod: dotproduct
-    'sbg:x': -444
-    'sbg:y': -184
   - id: normalize
     in:
       - id: REF
@@ -79,8 +55,6 @@ steps:
       - id: normbin
     run: ../tools/normalize.cwl
     label: normalize
-    'sbg:x': -235.60113525390625
-    'sbg:y': -74
   - id: segmentation
     in:
       - id: case_list
@@ -93,8 +67,6 @@ steps:
       - id: CNV
     run: ../tools/segmentation.cwl
     label: segmentation
-    'sbg:x': -33.60113525390625
-    'sbg:y': -66
   - id: annotation
     in:
       - id: GENE_BED
@@ -105,7 +77,5 @@ steps:
       - id: annotated_cnv
     run: ../tools/annotation.cwl
     label: annotation
-    'sbg:x': 175.39886474609375
-    'sbg:y': -63
 requirements:
   - class: ScatterFeatureRequirement

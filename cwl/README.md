@@ -32,5 +32,8 @@ outputs:
         'sbg:y': 1123.8125
     ```
 
+    Something like this should work: 
+        `grep -v "sbg:" $CWL | grep -v "\$namespaces:"`
+
 
 TinDaisy/cwl/workflow/removeSBG.sh performes the stylystic changes but not the cromwell-specific output changes
