@@ -18,7 +18,7 @@ inputs:
 outputs:
   - id: annotated_cnv
     outputSource:
-      - annotation/annotated_cnv
+      annotation/annotated_cnv
     type: File
 steps:
   - id: uniquereads
@@ -40,6 +40,8 @@ steps:
         source: REF
       - id: MAP
         source: MAP
+      - id: finalize
+        default: true
       - id: READ_LENGTH
         default: 150
       - id: FRAG_SIZE
