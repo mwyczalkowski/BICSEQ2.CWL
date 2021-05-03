@@ -71,20 +71,11 @@ inputs:
       position: 0
       prefix: '-X'
 outputs:
-  - id: PDF
-    type: File?
-    outputBinding:
-      glob: results/*.GC.pdf
-  - id: parameter_estimate
-    label: parameter estimate
-    type: File?
-    outputBinding:
-      glob: results/*.out.txt
   - id: normbin
     doc: 'Normalized data, per chrom'
     type: 'File[]'
     outputBinding:
-      glob: results/*.norm.bin
+      glob: norm/results/*.norm.bin
 label: normalize
 requirements:
   - class: DockerRequirement

@@ -30,7 +30,7 @@ inputs:
       same length as CASE_LIST and CONTROL_LIST
   - 'sbg:toolDefaultValue': '3'
     id: lambda
-    type: float?
+    type: float
     inputBinding:
       position: 0
       prefix: '-l'
