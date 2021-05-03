@@ -11,8 +11,8 @@ inputs:
     'sbg:y': -125
   - id: REF
     type: File
-    'sbg:x': -525.6011352539062
-    'sbg:y': 177
+    'sbg:x': -657
+    'sbg:y': 78
   - id: MAP
     type: File
     'sbg:x': -397.60113525390625
@@ -21,24 +21,20 @@ inputs:
     type: File
     'sbg:x': 139.39886474609375
     'sbg:y': -224
+  - id: chr_list
+    type: 'string[]'
+    'sbg:x': -799.078125
+    'sbg:y': -323.5
+  - id: MER
+    type: string?
+    'sbg:x': -623
+    'sbg:y': 236
 outputs:
-  - id: PDF
-    outputSource:
-      - normalize/PDF
-    type: File?
-    'sbg:x': -120.60113525390625
-    'sbg:y': -224
-  - id: parameter_estimate
-    outputSource:
-      - normalize/parameter_estimate
-    type: File?
-    'sbg:x': 33.39886474609375
-    'sbg:y': -226
   - id: PNG
     outputSource:
       - segmentation/PNG
     type: File?
-    'sbg:x': 172.39886474609375
+    'sbg:x': 189
     'sbg:y': -382
   - id: annotated_cnv
     outputSource:
@@ -49,6 +45,8 @@ outputs:
 steps:
   - id: uniquereads
     in:
+      - id: chr
+        source: chr_list
       - id: BAM
         source: BAM
     out:
@@ -66,12 +64,18 @@ steps:
         source: REF
       - id: MAP
         source: MAP
+      - id: READ_LENGTH
+        default: 150
+      - id: FRAG_SIZE
+        default: 350
+      - id: BIN_SIZE
+        default: 100
+      - id: MER
+        source: MER
       - id: SEQ
         source:
           - uniquereads/seq
     out:
-      - id: PDF
-      - id: parameter_estimate
       - id: normbin
     run: ../tools/normalize.cwl
     label: normalize
@@ -82,6 +86,8 @@ steps:
       - id: case_list
         source:
           - normalize/normbin
+      - id: lambda
+        default: 3
     out:
       - id: PNG
       - id: CNV
