@@ -5,10 +5,6 @@ label: BICseq2.cwl
 $namespaces:
   sbg: 'https://www.sevenbridges.com/'
 inputs:
-  - id: BAM
-    type: File
-    'sbg:x': 0
-    'sbg:y': 321
   - id: REF
     type: File
     'sbg:x': 0
@@ -29,6 +25,10 @@ inputs:
     type: string?
     'sbg:x': 147.71875
     'sbg:y': 160.5
+  - id: BAM
+    type: File
+    'sbg:x': -314.077880859375
+    'sbg:y': 427
 outputs:
   - id: annotated_cnv
     outputSource:
@@ -42,7 +42,7 @@ steps:
       - id: chr
         source: chr_list
       - id: BAM
-        source: BAM
+        source: stage_bam/output
     out:
       - id: seq
     run: ../tools/uniquereads.cwl
@@ -105,5 +105,15 @@ steps:
     label: annotation
     'sbg:x': 776.8926391601562
     'sbg:y': 153.5
+  - id: stage_bam
+    in:
+      - id: BAM
+        source: BAM
+    out:
+      - id: output
+    run: ../tools/stage_bam.cwl
+    label: stage_bam
+    'sbg:x': -73.078125
+    'sbg:y': 406
 requirements:
   - class: ScatterFeatureRequirement
