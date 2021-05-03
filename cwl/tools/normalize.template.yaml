@@ -1,0 +1,17 @@
+XARGS: a_string  # type "string" (optional)
+SEQ:  # array of type "File"
+  - class: File
+    path: a/file/path
+MER: a_string  # type "string" (optional)
+BIN_SIZE: 0  # type "int" (optional)
+FRAG_SIZE: 0  # type "int" (optional)
+READ_LENGTH: 0  # type "int" (optional)
+finalize: false  # type "boolean" (optional)
+MAP:  # type "File"
+    class: File
+    path: a/file/path
+REF:  # type "File"
+    class: File
+    path: a/file/path
+chrlist:  # array of type "string" (optional)
+  - a_string

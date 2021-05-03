@@ -1,0 +1,10 @@
+XARGS: a_string  # type "string" (optional)
+lambda: 0.1  # type "float" (optional)
+CHR_LIST:  # array of type "string" (optional)
+  - a_string
+control_list:  # array of type "File" (optional)
+  - class: File
+    path: a/file/path
+case_list:  # array of type "File"
+  - class: File
+    path: a/file/path

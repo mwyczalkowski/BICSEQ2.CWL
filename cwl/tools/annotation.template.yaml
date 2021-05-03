@@ -1,0 +1,7 @@
+CNV:  # type "File"
+    class: File
+    path: a/file/path
+case_only: false  # type "boolean" (optional)
+GENE_BED:  # type "File"
+    class: File
+    path: a/file/path
