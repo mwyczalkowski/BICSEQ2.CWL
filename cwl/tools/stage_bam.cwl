@@ -7,7 +7,7 @@ baseCommand:
   - bash
   - /BICSEQ2/src/stage_file.sh
 inputs:
-  - id: input
+  - id: BAM
     type: File
     inputBinding:
       position: 99
@@ -34,3 +34,5 @@ arguments:
 requirements:
   - class: DockerRequirement
     dockerPull: 'mwyczalkowski/bicseq2:20210416'
+  - class: ResourceRequirement
+    ramMin: 8000
