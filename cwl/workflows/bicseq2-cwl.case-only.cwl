@@ -89,8 +89,8 @@ steps:
       - id: CNV
     run: ../tools/segmentation.cwl
     label: segmentation
-    'sbg:x': 601.6317749023438
-    'sbg:y': 153.5
+    'sbg:x': 590
+    'sbg:y': 205
   - id: annotation
     in:
       - id: GENE_BED
