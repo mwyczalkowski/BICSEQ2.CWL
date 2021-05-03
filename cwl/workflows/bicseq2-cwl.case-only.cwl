@@ -32,7 +32,7 @@ inputs:
 outputs:
   - id: annotated_cnv
     outputSource:
-      - annotation/annotated_cnv
+      annotation/annotated_cnv
     type: File
     'sbg:x': 1021.7628784179688
     'sbg:y': 160.5
