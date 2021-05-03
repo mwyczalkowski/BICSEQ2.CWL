@@ -32,7 +32,7 @@ inputs:
 outputs:
   - id: annotated_cnv
     outputSource:
-      annotation/annotated_cnv
+      - annotation/annotated_cnv
     type: File
     'sbg:x': 1021.7628784179688
     'sbg:y': 160.5
@@ -95,6 +95,8 @@ steps:
     in:
       - id: GENE_BED
         source: GENE_BED
+      - id: case_only
+        default: true
       - id: CNV
         source: segmentation/CNV
     out:
