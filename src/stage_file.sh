@@ -15,7 +15,7 @@ Options:
 -h: Print this help message
 -d: dry run
 -o OUTFN: result filename is as given.  Default is same filename as input in current directory
--p [ hard | soft | copy ]: type of staging to do, using `ln -h`, `ln -s`, or `cp`, resp.
+-p [ hard | soft | copy ]: type of staging to do, using `ln`, `ln -s`, or `cp`, resp.
 -s EXT: also stage secondary file which has given extension 
 
 Additional processing details and background
@@ -82,7 +82,7 @@ function stage_file {
     fi
 
     if [ $PROCESS == "hard" ]; then
-        CMD="ln -h $FILE_IN $FILE_OUT"
+        CMD="ln $FILE_IN $FILE_OUT"
     elif [ $PROCESS == "soft" ]; then
         CMD="ln -s $FILE_IN $FILE_OUT"
     elif [ $PROCESS == "copy" ]; then
