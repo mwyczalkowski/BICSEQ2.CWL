@@ -22,7 +22,7 @@ inputs:
     label: Input BAM file
 outputs:
   - id: seq
-    type: File?
+    type: File
     outputBinding:
       glob: '*unique.seq'
 label: UniqueReads
