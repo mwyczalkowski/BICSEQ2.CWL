@@ -21,8 +21,8 @@ Options:
 Additional processing details and background
 EOF
 
-#source /BICSEQ2/src/utils.sh
-source utils.sh
+source /BICSEQ2/src/utils.sh
+
 PROCESS="hard"
 # http://wiki.bash-hackers.org/howto/getopts_tutorial
 while getopts ":hdo:p:s:" opt; do
