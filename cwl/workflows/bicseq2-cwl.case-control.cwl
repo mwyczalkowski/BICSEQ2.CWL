@@ -25,7 +25,7 @@ inputs:
     type: string?
     'sbg:x': 300.875
     'sbg:y': 235
-  - id: normal_bam
+  - id: normal_BAM
     type: File
     secondaryFiles:
       - .bai
@@ -50,7 +50,7 @@ steps:
       - id: chr
         source: chr_list
       - id: BAM
-        source: stage_bam/output
+        source: stage_bam_normal/output
     out:
       - id: seq
     run: ../tools/uniquereads.cwl
@@ -60,7 +60,7 @@ steps:
     scatterMethod: dotproduct
     'sbg:x': 300.875
     'sbg:y': 121
-  - id: normalize
+  - id: normalize_normal
     in:
       - id: REF
         source: REF
@@ -82,17 +82,17 @@ steps:
     out:
       - id: normbin
     run: ../tools/normalize.cwl
-    label: normalize
+    label: normalize_normal
     'sbg:x': 496.9639892578125
     'sbg:y': 228
   - id: segmentation
     in:
       - id: case_list
         source:
-          - normalize_1/normbin
+          - normalize_tumor/normbin
       - id: control_list
         source:
-          - normalize/normbin
+          - normalize_normal/normbin
       - id: lambda
         default: 3
     out:
@@ -116,24 +116,24 @@ steps:
     label: annotation
     'sbg:x': 936.8566284179688
     'sbg:y': 167.5
-  - id: stage_bam
+  - id: stage_bam_normal
     in:
       - id: BAM
-        source: normal_bam
+        source: normal_BAM
     out:
       - id: output
     run: ../tools/stage_bam.cwl
-    label: stage_bam
+    label: stage_bam_normal
     'sbg:x': 149.015625
     'sbg:y': 174.5
-  - id: stage_bam_1
+  - id: stage_bam_tumor
     in:
       - id: BAM
         source: tumor_BAM
     out:
       - id: output
     run: ../tools/stage_bam.cwl
-    label: stage_bam
+    label: stage_bam_tumor
     'sbg:x': 149.015625
     'sbg:y': 67.5
   - id: uniquereads_tumor
@@ -141,7 +141,7 @@ steps:
       - id: chr
         source: chr_list
       - id: BAM
-        source: stage_bam_1/output
+        source: stage_bam_tumor/output
     out:
       - id: seq
     run: ../tools/uniquereads.cwl
@@ -151,7 +151,7 @@ steps:
     scatterMethod: dotproduct
     'sbg:x': 300.875
     'sbg:y': 0
-  - id: normalize_1
+  - id: normalize_tumor
     in:
       - id: REF
         source: REF
@@ -167,7 +167,7 @@ steps:
     out:
       - id: normbin
     run: ../tools/normalize.cwl
-    label: normalize
+    label: normalize_tumor
     'sbg:x': 496.9639892578125
     'sbg:y': 79
 requirements:
