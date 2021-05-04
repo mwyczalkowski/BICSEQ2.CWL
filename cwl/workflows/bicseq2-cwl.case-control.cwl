@@ -44,6 +44,12 @@ outputs:
     type: File
     'sbg:x': 1181.726806640625
     'sbg:y': 174.5
+  - id: CNV
+    outputSource:
+      segmentation/CNV
+    type: File
+    'sbg:x': 963.640625
+    'sbg:y': 420
 steps:
   - id: uniquereads_normal
     in:
@@ -100,8 +106,8 @@ steps:
       - id: CNV
     run: ../tools/segmentation.cwl
     label: segmentation
-    'sbg:x': 754.7880249023438
-    'sbg:y': 167.5
+    'sbg:x': 756
+    'sbg:y': 223
   - id: annotation
     in:
       - id: GENE_BED
