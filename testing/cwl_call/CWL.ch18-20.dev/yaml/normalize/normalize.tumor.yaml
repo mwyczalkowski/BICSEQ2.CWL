@@ -1,0 +1,20 @@
+#XARGS: a_string  # type "string" (optional)
+
+
+SEQ:  # array of type "File"
+  - class: File
+    path: /storage1/fs1/m.wyczalkowski/Active/Analysis.dev/BICseq2.cwl/results-tmp/unique_reads/tumor/chr18.unique.seq
+  - class: File
+    path: /storage1/fs1/m.wyczalkowski/Active/Analysis.dev/BICseq2.cwl/results-tmp/unique_reads/tumor/chr19.unique.seq
+  - class: File
+    path: /storage1/fs1/m.wyczalkowski/Active/Analysis.dev/BICseq2.cwl/results-tmp/unique_reads/tumor/chr20.unique.seq
+MER: GRCh38.d1.vd1.fa.150mer
+finalize: true
+MAP:  
+    class: File
+    path: /storage1/fs1/dinglab/Active/Projects/CPTAC3/Analysis/WGS_CNV_Somatic/Datasets/inputs/GRCh38.d1.vd1.fa.150mer-noBedGraph.tar.gz
+REF:  
+    class: File
+    path: /storage1/fs1/dinglab/Active/Projects/CPTAC3/Analysis/WGS_CNV_Somatic/Datasets/inputs/hg38/GRCh38.d1.vd1-per_chrom_fa.tar.gz
+#chrlist:  # array of type "string" (optional)
+#  - a_string

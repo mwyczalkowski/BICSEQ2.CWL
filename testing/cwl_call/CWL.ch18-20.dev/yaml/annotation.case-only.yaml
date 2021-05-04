@@ -1,0 +1,7 @@
+CNV:  # type "File"
+    class: File
+    path: /storage1/fs1/m.wyczalkowski/Active/Analysis.dev/BICseq2.cwl/results-tmp/segmentation-case/case.cnv
+case_only: true
+GENE_BED:  
+    class: File
+    path: /storage1/fs1/dinglab/Active/Projects/CPTAC3/Analysis/WGS_CNV_Somatic/Datasets/cached.annotation/gencode.v29.annotation.hg38.p12.bed
