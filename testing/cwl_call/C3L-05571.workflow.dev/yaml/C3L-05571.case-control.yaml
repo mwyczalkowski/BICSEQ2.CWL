@@ -1,0 +1,43 @@
+tumor_BAM:  # type "File"
+    class: File
+    path: /storage1/fs1/m.wyczalkowski/Active/Primary/CPTAC3.share/CPTAC3-GDC/GDC_import/data/0a1d1971-388c-472e-a6ac-c3608817ee7d/63c942b4-6dcf-4ed7-8c57-d9216fb8ac87_wgs_gdc_realn.bam
+normal_BAM:  # type "File"
+    class: File
+    path: /storage1/fs1/m.wyczalkowski/Active/Primary/CPTAC3.share/CPTAC3-GDC/GDC_import/data/04fe5225-2758-4691-b709-934aa7656050/2154e8df-970e-44cf-a0d9-ee0a6cc3a8f6_wgs_gdc_realn.bam
+
+MER: GRCh38.d1.vd1.fa.150mer
+chr_list:  # array of type "string"
+  - chr1
+  - chr2
+  - chr3
+  - chr4
+  - chr5
+  - chr6
+  - chr7
+  - chr8
+  - chr9
+  - chr10
+  - chr11
+  - chr12
+  - chr13
+  - chr14
+  - chr15
+  - chr16
+  - chr17
+  - chr18
+  - chr19
+  - chr20
+  - chr21
+  - chr22
+  - chrX
+  - chrY
+
+GENE_BED:  # type "File"
+    class: File
+    path: /storage1/fs1/dinglab/Active/Projects/CPTAC3/Analysis/WGS_CNV_Somatic/Datasets/cached.annotation/gencode.v29.annotation.hg38.p12.bed
+MAP:  # type "File"
+    class: File
+    path: /storage1/fs1/dinglab/Active/Projects/CPTAC3/Analysis/WGS_CNV_Somatic/Datasets/inputs/GRCh38.d1.vd1.fa.150mer-noBedGraph.tar.gz
+REF:  # type "File"
+    class: File
+    path: /storage1/fs1/dinglab/Active/Projects/CPTAC3/Analysis/WGS_CNV_Somatic/Datasets/inputs/hg38/GRCh38.d1.vd1-per_chrom_fa.tar.gz
