@@ -4,48 +4,60 @@
 # Yige Wu <yigewu@wustl.edu>
 # https://dinglab.wustl.edu/
 
-# Create normalization configuration file and run BICSeq normalization on all chromosomes
-# Usage:
-#   bash run_norm.sh [options] SEQ1 [SEQ2 ...]
-#   SEQ (SEQLIST) is list of results of get_unique.sh output. Chromosome is obtained from input filenames
-#      with the assumption they are named `CHR.unique.seq`. 
-#
-# Options:
-#   -v: verbose
-#   -s SAMPLE_NAME: Unique name for this run.  Default: sample
-#   -d: dry run. Make normalization configuration file but do not execute BICSeq-norm script
-#   -c CHRLIST: define chrom list, which will define CHR for a given result.  List must be same length
-#      as SEQLIST
-#   -C norm_config: Use given normalization config file, rather than creating it
-#   -w: issue warnings instead of fatal errors if `perl NBICseq-norm.pl` fails
-#   -o OUTD: set output directory.  Defalt is ./norm
-#   -R REFD: path to reference files, or compressed file which contains these.  
-#       Assume per-chrom reference filenames are named CHR.fa.  Required
-#   -m MER: Base name for mappability files.  Example: GRCh38.d1.vd1.150mer  Required
-#       Traditionally, MER=${REFNAM}.${READ_LENGTH}mer
-#   -M MAPD: path to mappability files, or compressed file which contains these.  
-#       Assume per-chrom mappability files are in directory MAPD/MER.CHR.txt. Required
-#   -F: Remove $OUTD/mappability and $OUTD/reference directories if they were created
-#   -X XARGS: arguments to be passed directly to NBICseq-norm.pl
-# Parameters used by BICSEQ_NORM
-#   -r READ_LENGTH.  Default 150
-#   -f FRAG_SIZE.  Default 350
-#   -b BIN_SIZE.  Default 100
+read -r -d '' USAGE <<'EOF'
+Create normalization configuration file and run BICSeq normalization on all chromosomes
+Usage:
+  bash run_norm.sh [options] SEQ1 [SEQ2 ...]
+  SEQ (SEQLIST) is list of results of get_unique.sh output. Chromosome is obtained from input filenames
+     with the assumption they are named `CHR.unique.seq`. 
 
-# * Input
-#   * Reads per-chrom reference, mapping, and seq files
-#   * Iterates over SEQLIST
-#   * If REFD and MAPD given as .tar.gz files, they are extracted into $OUTD/reference and $OUTD/mappability
-#     directories.  These directories can be deleted at the conclusion of the run with -F flag
-# * All output of this step written to $OUTD:
-#   * normalization configuration file results/{SAMPLE_NAME}.norm-config.txt
-#   * PDF written as {SAMPLE_NAME}.GC.pdf
-#   * parameter estimate output in {SAMPLE_NAME}.out.txt
-#   * Normalized data, per chrom, written to results/{SAMPLE_NAME}.{CHR}.norm.bin
-#     * Note that this is written to config file used by NBICseq-norm.pl
-#   * Tmp directory $OUTD/tmp created and passed as argument to NBICseq-norm.pl
-#   * If passed as .tar.gz, mappability and reference files uncompressed to $OUTD/reference and $OUTD/mappability
-#     * these can be deleted after conclusion of script with -F
+Options:
+  -v: verbose
+  -s SAMPLE_NAME: Unique name for this run.  Default: sample
+  -d: dry run. Make normalization configuration file but do not execute BICSeq-norm script
+  -c CHRLIST: define chrom list, which will define CHR for a given result.  List must be same length
+     as SEQLIST
+  -C norm_config: Use given normalization config file, rather than creating it
+  -w: issue warnings instead of fatal errors if `perl NBICseq-norm.pl` fails
+  -o OUTD: set output directory.  Defalt is ./norm
+  -R REFD: path to reference files, or compressed file which contains these.  
+      Assume per-chrom reference filenames are named CHR.fa.  Required
+  -m MER: Base name for mappability files.  Example: GRCh38.d1.vd1.150mer  Required
+      Traditionally, MER=${REFNAM}.${READ_LENGTH}mer
+  -M MAPD: path to mappability files, or compressed file which contains these.  
+      Assume per-chrom mappability files are in directory MAPD/MER.CHR.txt. Required
+  -F: Remove $OUTD/mappability and $OUTD/reference directories if they were created
+  -X XARGS: arguments to be passed directly to NBICseq-norm.pl
+  -x X0_POLICY: how to test for "excess zeros": allowed values = ignore, warning (default), error
+
+Parameters used by BICSEQ_NORM
+  -r READ_LENGTH.  Default 150
+  -f FRAG_SIZE.  Default 350
+  -b BIN_SIZE.  Default 100
+
+"excess zero" testing is a heuristic error diagnostic where column 3 of NBICseq-norm.pl output
+  has 0 as the most frequently observed value, which is associated with spurious results. X0_policy has 3 permitted values: 
+  "ignore" - do not test
+  "warning" - test results.  File results/{SAMPLE_NAME}.{CHR}.norm.bin.dist.dat is written with column 3 counts
+      If a "excess zero" situation is detected, the file results/{SAMPLE_NAME}.{CHR}.norm.bin.excess_zero.dat is also written
+      However, no error is returned and processing continues.  
+  "error" - same processing as "warning", but an error is generated and processing stops
+
+* Input
+  * Reads per-chrom reference, mapping, and seq files
+  * Iterates over SEQLIST
+  * If REFD and MAPD given as .tar.gz files, they are extracted into $OUTD/reference and $OUTD/mappability
+    directories.  These directories can be deleted at the conclusion of the run with -F flag
+* All output of this step written to $OUTD:
+  * normalization configuration file results/{SAMPLE_NAME}.norm-config.txt
+  * PDF written as {SAMPLE_NAME}.GC.pdf
+  * parameter estimate output in {SAMPLE_NAME}.out.txt
+  * Normalized data, per chrom, written to results/{SAMPLE_NAME}.{CHR}.norm.bin
+    * Note that this is written to config file used by NBICseq-norm.pl
+  * Tmp directory $OUTD/tmp created and passed as argument to NBICseq-norm.pl
+  * If passed as .tar.gz, mappability and reference files uncompressed to $OUTD/reference and $OUTD/mappability
+    * these can be deleted after conclusion of script with -F
+EOF
 
 SAMPLE_NAME="sample"
 
@@ -60,10 +72,15 @@ BIN_SIZE=100
 
 SCRIPT=$(basename $0)
 
+X0_POLICY="warning"
 OUTD="./norm"
 # http://wiki.bash-hackers.org/howto/getopts_tutorial
-while getopts ":vwdc:R:M:C:o:m:s:Fr:f:b:X:" opt; do
+while getopts ":hvwdc:R:M:C:o:m:s:Fr:f:b:X:x:" opt; do
   case $opt in
+    h)
+      echo "$USAGE"
+      exit 0
+      ;;
     v)  
       VERBOSE=1
       ;;
@@ -110,12 +127,22 @@ while getopts ":vwdc:R:M:C:o:m:s:Fr:f:b:X:" opt; do
     X) 
       XARGS="$OPTARG"
       ;;
+    x) 
+      if [ $OPTARG != "ignore" ] && [ $OPTARG != "warning" ] && [ $OPTARG != "error" ]; then
+          >&2 echo "$SCRIPT: ERROR: Invalid X0_POLICY: $OPTARG"
+          >&2 echo "$USAGE"
+          exit 1
+      fi  
+      X0_POLICY="$OPTARG"
+      ;;
     \?)
       >&2 echo "$SCRIPT: ERROR: Invalid option: -$OPTARG"
+      >&2 echo "$USAGE"
       exit 1
       ;;
     :)
       >&2 echo "$SCRIPT: ERROR: Option -$OPTARG requires an argument."
+      >&2 echo "$USAGE"
       exit 1
       ;;
   esac
@@ -223,6 +250,8 @@ function write_norm_config {
     printf "chromName\tfaFile\tMapFile\treadPosFile\tbinFileNorm\n" > $NORM_CONFIG
 
 
+    # Build up CHRLIST_NORMALIZED for use in excess zero checks
+    CHRLIST_NORMALIZED=""
 #https://stackoverflow.com/questions/17403498/iterate-over-two-arrays-simultaneously-in-bash
     for i in "${!SEQLIST[@]}"; do
         SEQ="${SEQLIST[i]}"
@@ -232,6 +261,7 @@ function write_norm_config {
         else
             CHR=$(echo $(basename $SEQ) | sed 's/\(.*\)\.unique.seq/\1/' )
         fi
+        CHRLIST_NORMALIZED="$CHRLIST_NORMALIZED $CHR"
         faFile=$(printf $FA_CHR $CHR)
         confirm $faFile   
         MapFile=$(printf $MAP_CHR $CHR)
@@ -251,6 +281,7 @@ else
     confirm $NORM_CONFIG
 fi
 
+# This is where the real processing happens
 CMD="$PERL $BICSEQ_NORM $XARGS --tmp=$TMPD -l $READ_LENGTH -s $FRAG_SIZE -b $BIN_SIZE --fig $PDF $NORM_CONFIG $OUTPARS"
 if [ $DRYRUN ]; then
     >&2 echo Dry run: $CMD
@@ -259,6 +290,26 @@ else
     eval $CMD
 fi
 test_exit_status
+
+# Now test for "excess zeros" in the results
+if [ $X0_POLICY != "ignore" ]; then
+    ARGS="-o $RESULTSD"
+    if [ $X0_POLICY = "ERROR" ]; then
+        ARGS="$ARGS -e"
+    fi
+
+    for i in $CHRLIST_NORMALIZED; do
+        binFile="$RESULTSD/${SAMPLE_NAME}.${i}.norm.bin" 
+        CMD="bash src/test_excess_zero.sh $ARGS $binFile"
+        if [ $DRYRUN ]; then
+            >&2 echo Dry run: $CMD
+        else
+            >&2 echo Running: $CMD
+            eval $CMD
+        fi
+        test_exit_status
+    done
+fi
 
 # Remove $OUTD/mappability and $OUTD/reference if they exist
 if [ $FINALIZE ]; then
