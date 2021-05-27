@@ -35,7 +35,7 @@ outputs:
 label: annotation
 requirements:
   - class: DockerRequirement
-    dockerPull: 'mwyczalkowski/bicseq2:20210416'
+    dockerPull: 'mwyczalkowski/bicseq2:20210527'
   - class: ResourceRequirement
     ramMin: 8000
 

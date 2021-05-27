@@ -12,4 +12,8 @@ ENV LC_ALL en_US.UTF-8
 RUN cd /NBICseq-seg_v0.7.2 \
     && chmod 755 BICseqOneSample.pl BICseqMulSample.pl EstimateLambdaFactor
 
+# Update with latest version of BICSeq.cwl
+COPY . /BICSEQ2
+WORKDIR /BICSEQ2
+
 CMD ["/bin/bash"]

@@ -1,1 +1,1 @@
-IMAGE="mwyczalkowski/bicseq2:20210416"
+IMAGE="mwyczalkowski/bicseq2:20210527"
