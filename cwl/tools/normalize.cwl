@@ -70,15 +70,31 @@ inputs:
     inputBinding:
       position: 0
       prefix: '-X'
+  - id: X0_POLICY
+    type: string?
+    inputBinding:
+      position: 0
+      prefix: '-x'
+    label: excess zero policy
+    doc: >-
+      how to test for "excess zeros" error condition: allowed values = ignore,
+      warning (default), error
 outputs:
   - id: normbin
     doc: 'Normalized data, per chrom'
     type: 'File[]'
     outputBinding:
       glob: norm/results/*.norm.bin
+  - id: excess_zero_flags
+    doc: >-
+      Flag indicating whether excess zero error condition was observed for any
+      chromosome
+    type: File?
+    outputBinding:
+      glob: norm/results/excess_zeros/*.excess_zeros_observed.dat
 label: normalize
 requirements:
-  - class: DockerRequirement
-    dockerPull: 'mwyczalkowski/bicseq2:20210527'
   - class: ResourceRequirement
     ramMin: 8000
+  - class: DockerRequirement
+    dockerPull: 'mwyczalkowski/bicseq2:20210527'
