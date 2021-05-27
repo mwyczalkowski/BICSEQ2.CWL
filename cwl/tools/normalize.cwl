@@ -89,7 +89,7 @@ outputs:
     doc: >-
       Flag indicating whether excess zero error condition was observed for any
       chromosome
-    type: File?
+    type: 'File[]?'
     outputBinding:
       glob: norm/results/excess_zeros/*.excess_zeros_observed.dat
 label: normalize
