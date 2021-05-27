@@ -38,8 +38,8 @@ Parameters used by BICSEQ_NORM
 "excess zero" testing is a heuristic error diagnostic where column 3 of NBICseq-norm.pl output
   has 0 as the most frequently observed value, which is associated with spurious results. X0_policy has 3 permitted values: 
   "ignore" - do not test
-  "warning" - test results.  File results/{SAMPLE_NAME}.{CHR}.norm.bin.dist.dat is written with column 3 counts
-      If a "excess zero" situation is detected, the file results/{SAMPLE_NAME}.{CHR}.norm.bin.excess_zero.dat is also written
+  "warning" - test results.  File results/excess_zeros/{SAMPLE_NAME}.{CHR}.norm.bin.dist.dat is written with column 3 counts
+      If a "excess zero" situation is detected, the file results/excess_zeros/{SAMPLE_NAME}.{CHR}.norm.bin.excess_zeros_observed.dat is also written
       However, no error is returned and processing continues.  
   "error" - same processing as "warning", but an error is generated and processing stops
 
