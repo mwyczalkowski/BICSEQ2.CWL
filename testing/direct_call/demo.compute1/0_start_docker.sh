@@ -1,9 +1,9 @@
 
-DATAD="/storage1/fs1/home1/Active/home/m.wyczalkowski/Projects/BICseq2/demo_data"
-OUTD="/storage1/fs1/home1/Active/home/m.wyczalkowski/Projects/BICseq2/tmp-results"
+DATAD="/storage1/fs1/home1/Active/home/m.wyczalkowski/Projects/BICseq2/demo_data.compute1/demo_data/"
+OUTD="/storage1/fs1/home1/Active/home/m.wyczalkowski/Projects/BICseq2/demo_data.compute1/tmp-results/"
 
 # BICseq2.CWL installation directory
-BSD="/storage1/fs1/home1/Active/home/m.wyczalkowski/Projects/BICseq2/BICSeq2.dev"
+BSD="/home/m.wyczalkowski/Projects/BICseq2/demo_data.compute1/BICSeq2.dev.demo_data"
 SYSTEM="compute1"
 mkdir -p $OUTD
 
