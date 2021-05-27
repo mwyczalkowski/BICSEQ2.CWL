@@ -64,6 +64,7 @@ SAMPLE_NAME="sample"
 source /BICSEQ2/src/utils.sh
 PERL="/usr/bin/perl"
 BICSEQ_NORM="/NBICseq-norm_v0.2.4/NBICseq-norm.pl"
+TEST_X0="/BICSEQ2/src/test_excess_zero.sh"
 
 # Parameters used by BICSEQ_NORM
 READ_LENGTH=150
@@ -293,14 +294,14 @@ test_exit_status
 
 # Now test for "excess zeros" in the results
 if [ $X0_POLICY != "ignore" ]; then
-    ARGS="-o $RESULTSD"
+    ARGS="-o $RESULTSD/excess_zeros"
     if [ $X0_POLICY = "ERROR" ]; then
         ARGS="$ARGS -e"
     fi
 
     for i in $CHRLIST_NORMALIZED; do
         binFile="$RESULTSD/${SAMPLE_NAME}.${i}.norm.bin" 
-        CMD="bash src/test_excess_zero.sh $ARGS $binFile"
+        CMD="bash $TEST_X0 $ARGS $binFile"
         if [ $DRYRUN ]; then
             >&2 echo Dry run: $CMD
         else
