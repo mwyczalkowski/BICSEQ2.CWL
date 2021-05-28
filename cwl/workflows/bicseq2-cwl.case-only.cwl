@@ -2,40 +2,28 @@ class: Workflow
 cwlVersion: v1.0
 id: bicseq2_cwl
 label: BICseq2.cwl
-$namespaces:
-  sbg: 'https://www.sevenbridges.com/'
 inputs:
   - id: REF
     type: File
-    'sbg:x': 0
-    'sbg:y': 0
   - id: MAP
     type: File
-    'sbg:x': 147.71875
-    'sbg:y': 267.5
   - id: GENE_BED
     type: File
-    'sbg:x': 0
-    'sbg:y': 107
   - id: chr_list
     type: 'string[]'
-    'sbg:x': 0
-    'sbg:y': 214
   - id: MER
     type: string?
-    'sbg:x': 147.71875
-    'sbg:y': 160.5
   - id: BAM
     type: File
-    'sbg:x': -314.077880859375
-    'sbg:y': 427
 outputs:
   - id: annotated_cnv
     outputSource:
       annotation/annotated_cnv
     type: File
-    'sbg:x': 1021.7628784179688
-    'sbg:y': 160.5
+  - id: excess_zero_flags
+    outputSource:
+      normalize/excess_zero_flags
+    type: 'File[]?'
 steps:
   - id: uniquereads
     in:
@@ -50,8 +38,6 @@ steps:
     scatter:
       - chr
     scatterMethod: dotproduct
-    'sbg:x': 147.71875
-    'sbg:y': 46.5
   - id: normalize
     in:
       - id: REF
@@ -71,12 +57,13 @@ steps:
       - id: SEQ
         source:
           - uniquereads/seq
+      - id: X0_POLICY
+        default: error
     out:
       - id: normbin
+      - id: excess_zero_flags
     run: ../tools/normalize.cwl
     label: normalize
-    'sbg:x': 343.8077392578125
-    'sbg:y': 139.5
   - id: segmentation
     in:
       - id: case_list
@@ -89,8 +76,6 @@ steps:
       - id: CNV
     run: ../tools/segmentation.cwl
     label: segmentation
-    'sbg:x': 590
-    'sbg:y': 205
   - id: annotation
     in:
       - id: GENE_BED
@@ -103,8 +88,6 @@ steps:
       - id: annotated_cnv
     run: ../tools/annotation.cwl
     label: annotation
-    'sbg:x': 776.8926391601562
-    'sbg:y': 153.5
   - id: stage_bam
     in:
       - id: BAM
@@ -113,7 +96,5 @@ steps:
       - id: output
     run: ../tools/stage_bam.cwl
     label: stage_bam
-    'sbg:x': -73.078125
-    'sbg:y': 406
 requirements:
   - class: ScatterFeatureRequirement

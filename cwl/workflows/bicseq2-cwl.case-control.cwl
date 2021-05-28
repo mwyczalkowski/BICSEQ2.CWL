@@ -2,54 +2,42 @@ class: Workflow
 cwlVersion: v1.0
 id: bicseq2_cwl_case_control
 label: BICseq2.cwl-case_control
-$namespaces:
-  sbg: 'https://www.sevenbridges.com/'
 inputs:
   - id: REF
     type: File
-    'sbg:x': 0
-    'sbg:y': 121
   - id: MAP
     type: File
-    'sbg:x': 300.875
-    'sbg:y': 342
   - id: GENE_BED
     type: File
-    'sbg:x': 0
-    'sbg:y': 335
   - id: chr_list
     type: 'string[]'
-    'sbg:x': 149.015625
-    'sbg:y': 281.5
   - id: MER
     type: string?
-    'sbg:x': 300.875
-    'sbg:y': 235
   - id: normal_BAM
     type: File
     secondaryFiles:
       - .bai
-    'sbg:x': 0
-    'sbg:y': 228
   - id: tumor_BAM
     type: File
     secondaryFiles:
       - .bai
-    'sbg:x': 0
-    'sbg:y': 14
 outputs:
   - id: annotated_cnv
     outputSource:
       annotation/annotated_cnv
     type: File
-    'sbg:x': 1181.726806640625
-    'sbg:y': 174.5
   - id: CNV
     outputSource:
       segmentation/CNV
     type: File
-    'sbg:x': 963.640625
-    'sbg:y': 420
+  - id: excess_zero_flags_tumor
+    outputSource:
+      normalize_tumor/excess_zero_flags
+    type: 'File[]?'
+  - id: excess_zero_flags_normal
+    outputSource:
+      normalize_normal/excess_zero_flags
+    type: 'File[]?'
 steps:
   - id: uniquereads_normal
     in:
@@ -64,8 +52,6 @@ steps:
     scatter:
       - chr
     scatterMethod: dotproduct
-    'sbg:x': 300.875
-    'sbg:y': 121
   - id: normalize_normal
     in:
       - id: REF
@@ -85,12 +71,13 @@ steps:
       - id: SEQ
         source:
           - uniquereads_normal/seq
+      - id: X0_POLICY
+        default: error
     out:
       - id: normbin
+      - id: excess_zero_flags
     run: ../tools/normalize.cwl
     label: normalize_normal
-    'sbg:x': 496.9639892578125
-    'sbg:y': 228
   - id: segmentation
     in:
       - id: case_list
@@ -106,8 +93,6 @@ steps:
       - id: CNV
     run: ../tools/segmentation.cwl
     label: segmentation
-    'sbg:x': 756
-    'sbg:y': 223
   - id: annotation
     in:
       - id: GENE_BED
@@ -120,8 +105,6 @@ steps:
       - id: annotated_cnv
     run: ../tools/annotation.cwl
     label: annotation
-    'sbg:x': 936.8566284179688
-    'sbg:y': 167.5
   - id: stage_bam_normal
     in:
       - id: BAM
@@ -130,8 +113,6 @@ steps:
       - id: output
     run: ../tools/stage_bam.cwl
     label: stage_bam_normal
-    'sbg:x': 149.015625
-    'sbg:y': 174.5
   - id: stage_bam_tumor
     in:
       - id: BAM
@@ -140,8 +121,6 @@ steps:
       - id: output
     run: ../tools/stage_bam.cwl
     label: stage_bam_tumor
-    'sbg:x': 149.015625
-    'sbg:y': 67.5
   - id: uniquereads_tumor
     in:
       - id: chr
@@ -155,8 +134,6 @@ steps:
     scatter:
       - chr
     scatterMethod: dotproduct
-    'sbg:x': 300.875
-    'sbg:y': 0
   - id: normalize_tumor
     in:
       - id: REF
@@ -170,11 +147,12 @@ steps:
       - id: SEQ
         source:
           - uniquereads_tumor/seq
+      - id: X0_POLICY
+        default: error
     out:
       - id: normbin
+      - id: excess_zero_flags
     run: ../tools/normalize.cwl
     label: normalize_tumor
-    'sbg:x': 496.9639892578125
-    'sbg:y': 79
 requirements:
   - class: ScatterFeatureRequirement
