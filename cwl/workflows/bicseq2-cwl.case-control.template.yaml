@@ -1,7 +1,8 @@
+X0_POLICY: a_string  # type "string" (optional)
 tumor_BAM:  # type "File"
     class: File
     path: a/file/path
-normal_bam:  # type "File"
+normal_BAM:  # type "File"
     class: File
     path: a/file/path
 MER: a_string  # type "string" (optional)
