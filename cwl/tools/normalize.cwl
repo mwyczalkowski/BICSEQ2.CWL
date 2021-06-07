@@ -85,13 +85,13 @@ outputs:
     type: 'File[]'
     outputBinding:
       glob: norm/results/*.norm.bin
-  - id: excess_zero_flags
+  - id: excess_zero_flag
     doc: >-
       Flag indicating whether excess zero error condition was observed for any
       chromosome
-    type: 'File[]?'
+    type: File?
     outputBinding:
-      glob: norm/results/excess_zeros/*.excess_zeros_observed.dat
+      glob: norm/results/excess_zeros/excess_zeros_observed.dat
 label: normalize
 requirements:
   - class: ResourceRequirement

@@ -30,14 +30,14 @@ outputs:
     outputSource:
       segmentation/CNV
     type: File
-  - id: excess_zero_flags_tumor
+  - id: excess_zero_flag_normal
     outputSource:
-      normalize_tumor/excess_zero_flags
-    type: 'File[]?'
-  - id: excess_zero_flags_normal
+      normalize_tumor/excess_zero_flag
+    type: File?
+  - id: excess_zero_flag_tumor
     outputSource:
-      normalize_normal/excess_zero_flags
-    type: 'File[]?'
+      normalize_normal/excess_zero_flag
+    type: File?
 steps:
   - id: uniquereads_normal
     in:
@@ -72,10 +72,10 @@ steps:
         source:
           - uniquereads_normal/seq
       - id: X0_POLICY
-        default: error
+        default: warning
     out:
       - id: normbin
-      - id: excess_zero_flags
+      - id: excess_zero_flag
     run: ../tools/normalize.cwl
     label: normalize_normal
   - id: segmentation
@@ -142,16 +142,22 @@ steps:
         source: MAP
       - id: finalize
         default: true
+      - id: READ_LENGTH
+        default: 150
+      - id: FRAG_SIZE
+        default: 350
+      - id: BIN_SIZE
+        default: 100
       - id: MER
         source: MER
       - id: SEQ
         source:
-          - uniquereads_tumor/seq
+          - uniquereads_normal/seq
       - id: X0_POLICY
-        default: error
+        default: warning
     out:
       - id: normbin
-      - id: excess_zero_flags
+      - id: excess_zero_flag
     run: ../tools/normalize.cwl
     label: normalize_tumor
 requirements:

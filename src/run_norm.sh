@@ -39,7 +39,8 @@ Parameters used by BICSEQ_NORM
   has 0 as the most frequently observed value, which is associated with spurious results. X0_policy has 3 permitted values: 
   "ignore" - do not test
   "warning" - test results.  File results/excess_zeros/{SAMPLE_NAME}.{CHR}.norm.bin.dist.dat is written with column 3 counts
-      If a "excess zero" situation is detected, the file results/excess_zeros/{SAMPLE_NAME}.{CHR}.norm.bin.excess_zeros_observed.dat is also written
+      If a "excess zero" situation is detected, file results/excess_zeros/{SAMPLE_NAME}.{CHR}.norm.bin.excess_zeros_observed.dat is also written
+      Also, the file results/excess_zeros/excess_zeros_observed.dat is also written (work-around cromwell bug)
       However, no error is returned and processing continues.  
   "error" - same processing as "warning", but an error is generated and processing stops
 
@@ -310,6 +311,14 @@ if [ $X0_POLICY != "ignore" ]; then
         fi
         test_exit_status
     done
+
+# Now test if *any* chr had excess zeros, and create file excess_zeros_observed.dat 
+# This allows for testing of a single flag
+    if compgen -G "$RESULTSD/excess_zeros/*.excess_zeros_observed.dat" > /dev/null; then
+        OUT_FLAG_FILE="$RESULTSD/excess_zeros/excess_zeros_observed.dat"
+        echo "Excess zeros observed" > $OUT_FLAG_FILE
+        test_exit_status
+    fi
 fi
 
 # Remove $OUTD/mappability and $OUTD/reference if they exist
