@@ -21,6 +21,11 @@ inputs:
     type: File
     secondaryFiles:
       - .bai
+  - id: X0_POLICY
+    type: string?
+    doc: >-
+      Defines whether workflow error results because of excess zero error during
+      normalization.  Allowed values: none, warning (default), error
 outputs:
   - id: annotated_cnv
     outputSource:
@@ -73,6 +78,7 @@ steps:
           - uniquereads_normal/seq
       - id: X0_POLICY
         default: warning
+        source: X0_POLICY
     out:
       - id: normbin
       - id: excess_zero_flag
@@ -155,6 +161,7 @@ steps:
           - uniquereads_normal/seq
       - id: X0_POLICY
         default: warning
+        source: X0_POLICY
     out:
       - id: normbin
       - id: excess_zero_flag
