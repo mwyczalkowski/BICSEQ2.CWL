@@ -29,6 +29,7 @@ Options:
   -F: Remove $OUTD/mappability and $OUTD/reference directories if they were created
   -X XARGS: arguments to be passed directly to NBICseq-norm.pl
   -x X0_POLICY: how to test for "excess zeros": allowed values = ignore, warning (default), error
+  -z CHR_X0_EXCLUDE: list of chrom to exclude from evaluation of excess zeros
 
 Parameters used by BICSEQ_NORM
   -r READ_LENGTH.  Default 150
@@ -77,7 +78,7 @@ SCRIPT=$(basename $0)
 X0_POLICY="warning"
 OUTD="./norm"
 # http://wiki.bash-hackers.org/howto/getopts_tutorial
-while getopts ":hvwdc:R:M:C:o:m:s:Fr:f:b:X:x:" opt; do
+while getopts ":hvwdc:R:M:C:o:m:s:Fr:f:b:X:x:z:" opt; do
   case $opt in
     h)
       echo "$USAGE"
@@ -136,6 +137,9 @@ while getopts ":hvwdc:R:M:C:o:m:s:Fr:f:b:X:x:" opt; do
           exit 1
       fi  
       X0_POLICY="$OPTARG"
+      ;;
+    z) 
+      CHR_X0_EXCLUDE=($OPTARG)
       ;;
     \?)
       >&2 echo "$SCRIPT: ERROR: Invalid option: -$OPTARG"
@@ -240,7 +244,7 @@ PDF="$RESULTSD/${SAMPLE_NAME}.GC.pdf"
 function write_norm_config {
     NORM_CONFIG="$RESULTSD/${SAMPLE_NAME}.norm-config.txt"
 
-    # Create configuration file by iterating over all chrom in CHRLIST
+    # Create configuration file by iterating over all chrom in SEQLIST
     ## Config file format defined here: https://www.math.pku.edu.cn/teachers/xirb/downloads/software/BICseq2/BICseq2.html
         # The first row of this file is assumed to be the header of the file and will be omitted by BICseq2-norm.
         # The 1st column (chromName) is the chromosome name
@@ -301,6 +305,13 @@ if [ $X0_POLICY != "ignore" ]; then
     fi
 
     for i in $CHRLIST_NORMALIZED; do
+        if [ ! -z $CHR_XO_EXCLUDE ]; then   # skip chrom we don't want to test for excess zeros
+            if [[ " ${CHR_XO_EXCLUDE[@]} " =~ " ${i} " ]]; then
+                # https://stackoverflow.com/questions/3685970/check-if-a-bash-array-contains-a-value
+                continue
+            fi
+        fi
+
         binFile="$RESULTSD/${SAMPLE_NAME}.${i}.norm.bin" 
         CMD="bash $TEST_X0 $ARGS $binFile"
         if [ $DRYRUN ]; then
