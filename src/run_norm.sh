@@ -305,8 +305,9 @@ if [ $X0_POLICY != "ignore" ]; then
     fi
 
     for i in $CHRLIST_NORMALIZED; do
-        if [ ! -z $CHR_XO_EXCLUDE ]; then   # skip chrom we don't want to test for excess zeros
-            if [[ " ${CHR_XO_EXCLUDE[@]} " =~ " ${i} " ]]; then
+        if [ ! -z $CHR_X0_EXCLUDE ]; then   # skip chrom we don't want to test for excess zeros
+            if [[ " ${CHR_X0_EXCLUDE[@]} " =~ " ${i} " ]]; then
+                >&2 echo NOTE: skipping X0 test of $i
                 # https://stackoverflow.com/questions/3685970/check-if-a-bash-array-contains-a-value
                 continue
             fi
