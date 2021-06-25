@@ -53,6 +53,6 @@ outputs:
 label: segmentation
 requirements:
   - class: DockerRequirement
-    dockerPull: 'mwyczalkowski/bicseq2:20210527'
+    dockerPull: 'mwyczalkowski/bicseq2:20210625'
   - class: ResourceRequirement
     ramMin: 8000
