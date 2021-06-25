@@ -35,11 +35,11 @@ outputs:
     outputSource:
       segmentation/CNV
     type: File
-  - id: excess_zero_flag_normal
+  - id: excess_zero_flag_tumor 
     outputSource:
       normalize_tumor/excess_zero_flag
     type: File?
-  - id: excess_zero_flag_tumor
+  - id: excess_zero_flag_normal
     outputSource:
       normalize_normal/excess_zero_flag
     type: File?
@@ -79,6 +79,9 @@ steps:
       - id: X0_POLICY
         default: warning
         source: X0_POLICY
+      - id: x0_exclude
+        default:
+          - chrY
     out:
       - id: normbin
       - id: excess_zero_flag
@@ -162,6 +165,9 @@ steps:
       - id: X0_POLICY
         default: warning
         source: X0_POLICY
+      - id: x0_exclude
+        default:
+          - chrY
     out:
       - id: normbin
       - id: excess_zero_flag

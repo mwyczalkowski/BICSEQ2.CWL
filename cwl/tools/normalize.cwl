@@ -79,6 +79,12 @@ inputs:
     doc: >-
       how to test for "excess zeros" error condition: allowed values = ignore,
       warning (default), error
+  - id: x0_exclude
+    type: 'string[]?'
+    inputBinding:
+      position: 0
+      prefix: '-z'
+    doc: list of chrom to exclude from evaluation of excess zeros
 outputs:
   - id: normbin
     doc: 'Normalized data, per chrom'
