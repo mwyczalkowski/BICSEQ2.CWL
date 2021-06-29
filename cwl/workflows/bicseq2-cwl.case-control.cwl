@@ -161,7 +161,7 @@ steps:
         source: MER
       - id: SEQ
         source:
-          - uniquereads_normal/seq
+          - uniquereads_tumor/seq
       - id: X0_POLICY
         default: warning
         source: X0_POLICY
