@@ -10,7 +10,6 @@ Based on BICSeq tools:
 
 Gene annotation based on GENCODE release 29
 
-
 ## Versions
 
 v2.5 - CWL implementation.  Underlying libraries unchanged from v2.0
