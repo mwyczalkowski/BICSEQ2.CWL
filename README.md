@@ -1,9 +1,10 @@
 [BICseq2 CWL pipeline](https://github.com/mwyczalkowski/BICSEQ2.git), version 2.5
 
-# Background
+# Algorithm details
 
-The BICSEQ2.CWL project is a workflow implementation of the [BIC-Seq2 software](http://compbio.med.harvard.edu/BIC-seq/)
-This includes a docker image containing the software and a CWL workflow implementation.
+The BICSEQ2.CWL project is a workflow implementation of the [BIC-Seq2
+software](http://compbio.med.harvard.edu/BIC-seq/) This includes a docker image
+containing the software and a CWL workflow implementation.
 
 The following versions of BICSeq tools are used:
   * NBICseq-norm_v0.2.4
@@ -11,7 +12,10 @@ The following versions of BICSeq tools are used:
   * samtools-0.1.7a_getUnique-0.1.3
   * GEM-binaries-Linux-x86_64-core_i3-20130406-045632
 
-Additional details about processing and interpretation can be found in the [README.processing_description.md](README.processing_description.md) file
+v2.5 data releases for the CPTAC3 consoritium are also associated with specific
+reference and database versions.  These and other details can be found in the
+[README.processing_description.v2.5.md](README.processing_description.v2.5.md)
+file
 
 # Versions
 
@@ -26,12 +30,19 @@ Note that the dockerfile builds on top of image tagged: mwyczalkowski/bicseq2:20
 
 # Workflow overview
 
+## additional details
+* Staging of files
+* Scatter / gather
+* Read length
 
 ## Workflow options
 
 * case-only vs. case-control
 * Excess zeros
-* 
+ - flag files generated
 
 
+# TODO
 
+* include PNG of CWL workflow
+* add discussion of reference, read length, other details to processing description file

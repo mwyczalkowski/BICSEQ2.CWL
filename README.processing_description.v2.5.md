@@ -1,18 +1,22 @@
-# BICseq2
+# CPTAC3 Somatic CNV v2.5 processing description
 
-[BICseq2 CWL pipeline](https://github.com/mwyczalkowski/BICSEQ2.git), version 2.5
-
-Based on BICSeq tools:
+The CPTAC3 Somatic CNV v2.5 data release is based on the 
+[BICseq2 CWL v2.5 pipeline](https://github.com/mwyczalkowski/BICSEQ2.git).
+This workflow includes the following tools:
   * NBICseq-norm_v0.2.4
   * NBICseq-seg_v0.7.2
   * samtools-0.1.7a_getUnique-0.1.3
   * GEM-binaries-Linux-x86_64-core_i3-20130406-045632
 
-Gene annotation based on GENCODE release 29
+For CPTAC3, the following additional reference and database details apply:
+* Gene annotation based on GENCODE release 29
+* Read length assumed 150
 
 ## Versions
 
-v2.5 - CWL implementation.  Underlying libraries unchanged from v2.0
+v2.5 - CWL implementation to improve reliability and performance. The underlying libraries and software versions are unchanged from v2.1
+    and should be directly comparable
+v2.1 - TODO 
 
 # Processing description
 We used BIC-seq2 (Xi et al., 2016), a read-depth-based CNV calling algorithm to
