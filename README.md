@@ -14,7 +14,7 @@ The following versions of BICSeq tools are used:
 
 v2.5 data releases for the CPTAC3 consoritium are also associated with specific
 reference and database versions.  These and other details can be found in the
-[README.processing_description.v2.5.md](README.processing_description.v2.5.md)
+[README.processing_description.v2.5.md](doc/README.processing_description.v2.5.md)
 file
 
 ## Versions
