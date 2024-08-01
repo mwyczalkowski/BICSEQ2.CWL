@@ -1,7 +1,7 @@
 class: Workflow
 cwlVersion: v1.0
-id: bicseq2_cwl
-label: BICseq2.cwl
+id: bicseq2_cwl_case
+label: BICseq2.cwl-case
 inputs:
   - id: REF
     type: File
@@ -15,14 +15,21 @@ inputs:
     type: string?
   - id: BAM
     type: File
+    secondaryFiles:
+      - .bai
+  - id: X0_POLICY
+    type: string?
+    doc: >-
+      Defines whether workflow error results because of excess zero error during
+      normalization.  Allowed values: none, warning (default), error
 outputs:
   - id: annotated_cnv
     outputSource:
       annotation/annotated_cnv
     type: File
-  - id: excess_zero_flags
+  - id: excess_zero_flag
     outputSource:
-      normalize/excess_zero_flags
+      normalize/excess_zero_flag
     type: 'File[]?'
 steps:
   - id: uniquereads
@@ -58,10 +65,14 @@ steps:
         source:
           - uniquereads/seq
       - id: X0_POLICY
-        default: error
+        default: warning
+        source: X0_POLICY
+      - id: x0_exclude
+        default:
+          - chrY
     out:
       - id: normbin
-      - id: excess_zero_flags
+      - id: excess_zero_flag
     run: ../tools/normalize.cwl
     label: normalize
   - id: segmentation
