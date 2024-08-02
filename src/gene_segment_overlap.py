@@ -7,6 +7,11 @@ import numpy
 import math
 '''modified from a script of Steven Foltz'''
 
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+eprint("gene_segment_overlap v.202408")
+
 gene_list = []
 '''list to store all the gene symbols'''
 gene_dict = {}
@@ -20,8 +25,14 @@ for line in sys.stdin:
     if line[4] == ".":
       '''a empty line for already processed gene, most likely due to gene annotation files with duplicate lines for the same gene!")'''
     else:
-      gene_dict[gene][3] += int(line[6])-int(line[5])
-      gene_dict[gene][4] += (int(line[6])-int(line[5]))*math.pow(2,float(line[7]))
+      try:
+          gene_dict[gene][3] += int(line[6])-int(line[5])
+          gene_dict[gene][4] += (int(line[6])-int(line[5]))*math.pow(2,float(line[7]))
+      except TypeError:
+        # Catch errors like, TypeError: cannot concatenate 'str' and 'int' objects
+          eprint("TypeError caught for line: "+line)
+          gene_dict[gene][3] = int(line[6])-int(line[5])
+          gene_dict[gene][4] = (int(line[6])-int(line[5]))*math.pow(2,float(line[7]))
   else:
     gene_list.append(gene)
     if line[4] == ".":
