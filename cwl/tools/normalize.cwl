@@ -103,4 +103,4 @@ requirements:
   - class: ResourceRequirement
     ramMin: 8000
   - class: DockerRequirement
-    dockerPull: 'mwyczalkowski/bicseq2:20210625'
+    dockerPull: 'mwyczalkowski/bicseq2:202408'

@@ -1,0 +1,8 @@
+CNV:  # type "File"
+    class: File
+    path: /scratch1/fs1/dinglab/m.wyczalkowski/cromwell-data/cromwell-workdir/cromwell-executions/bicseq2-cwl.case-only.cwl/ea188589-ee4e-4bdf-bef2-c26961a830d6/call-annotation/inputs/2077039735/case.cnv
+case_only: true  # type "boolean" (optional)
+GENE_BED:  # type "File"
+    class: File
+    path: storage1/fs1/dinglab/Active/Projects/CPTAC3/Analysis/WGS_CNV_Somatic/Datasets/cached.annotation/gencode.v29.annotation.hg38.p12.bed
+

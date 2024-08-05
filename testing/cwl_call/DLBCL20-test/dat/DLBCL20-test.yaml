@@ -1,0 +1,42 @@
+# YAML input file for SomaticCNV
+BAM:  # type "File"
+    class: File
+    path: /storage1/fs1/m.wyczalkowski/Active/Primary/GDAN-AWS/dlbcl-misc-bucket/CTSP-ACYL-TTP1-L-1-0-D-A92F-36.WholeGenome.RP-1329.bam
+# this is from first line of /home/m.wyczalkowski/Projects/GDAN/Work/20240718.DLBCL_Validation/dat/BamMap20.dat
+
+MER: GRCh38.d1.vd1.fa.150mer
+chr_list:  # array of type "string"
+  - chr1
+  - chr2
+  - chr3
+  - chr4
+  - chr5
+  - chr6
+  - chr7
+  - chr8
+  - chr9
+  - chr10
+  - chr11
+  - chr12
+  - chr13
+  - chr14
+  - chr15
+  - chr16
+  - chr17
+  - chr18
+  - chr19
+  - chr20
+  - chr21
+  - chr22
+  - chrX
+  - chrY
+
+GENE_BED:  # type "File"
+    class: File
+    path: /storage1/fs1/dinglab/Active/Projects/CPTAC3/Analysis/WGS_CNV_Somatic/Datasets/cached.annotation/gencode.v29.annotation.hg38.p12.bed
+MAP:  # type "File"
+    class: File
+    path: /storage1/fs1/dinglab/Active/Projects/CPTAC3/Analysis/WGS_CNV_Somatic/Datasets/inputs/GRCh38.d1.vd1.fa.150mer-noBedGraph.tar.gz
+REF:  # type "File"
+    class: File
+    path: /storage1/fs1/dinglab/Active/Projects/CPTAC3/Analysis/WGS_CNV_Somatic/Datasets/inputs/hg38/GRCh38.d1.vd1-per_chrom_fa.tar.gz

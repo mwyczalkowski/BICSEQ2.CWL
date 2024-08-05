@@ -12,10 +12,12 @@ Testing takes place at 3 levels:
 * `cwl_call`
   * executes individual tools or entire workflow
   * May consist of calls to a monolithic CWL step or modular CWL steps
-  * Specific workflows for cromwell, rabix, and cwltool
+  * Modern (circa 2024) testing of CWL on compute1 using cromwell here:
+        testing/cwl_call/DLBCL20-test
+    * Others are old workflows for cromwell, rabix, and cwltool
 
 Current testing takes place on three systems: shiso (macbook pro), katmai (ubuntu linux server),
-and MGI (McDonnell Genome Institute cluster).
+and MGI (McDonnell Genome Institute cluster).  
 
 Datasets we use currently:
 * Demo dataset - small tumor / normal BAM file pair and reference, from distribution of Manta
