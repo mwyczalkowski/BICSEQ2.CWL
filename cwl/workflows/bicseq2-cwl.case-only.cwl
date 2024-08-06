@@ -31,6 +31,10 @@ outputs:
     outputSource:
       normalize/excess_zero_flag
     type: 'File[]?'
+  - id: CNV
+    outputSource:
+      - segmentation/CNV
+    type: File
 steps:
   - id: uniquereads
     in:
