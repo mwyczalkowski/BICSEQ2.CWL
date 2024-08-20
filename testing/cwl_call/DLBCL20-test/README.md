@@ -140,3 +140,37 @@ Success!
   },
   "id": "d7c33970-3273-4864-b47c-6986bf88aebd"
 }
+
+## Confirming
+Running 1_run_cromwell-tumor_only_workflow.sh,
+```
+Start:
+[2024-08-05 17:34:56,67] [warn] DispatchedConfigAsyncJobExecutionActor [e5202230stage_bam:NA:1]: Unrecognized runtime attribute keys: memoryMax, memoryMin
+...
+[2024-08-05 19:35:13,42] [info] SingleWorkflowRunnerActor workflow finished with status 'Succeeded'.
+{
+  "outputs": {
+    "bicseq2-cwl.case-only.cwl.annotated_cnv": {
+      "format": null,
+      "location": "/scratch1/fs1/dinglab/m.wyczalkowski/cromwell-data/cromwell-workdir/cromwell-executions/bicseq2-cwl.case-only.cwl/e5202230-9691-4d8c-8038-c72a2fec5c61/call-annotation/execution/glob-8d2a4c6350ac0f3eef6344d845feb79b/case.gene_level.log2.seg",
+      "size": 1010223,
+      "secondaryFiles": [],
+      "contents": null,
+      "checksum": null,
+      "class": "File"
+    },
+    "bicseq2-cwl.case-only.cwl.excess_zero_flag": null
+  },
+  "id": "e5202230-9691-4d8c-8038-c72a2fec5c61"
+}
+```
+
+Note, only the .seg file is output.  Should also have CNV file output like tumor/normal.  
+
+-> Somatic CNV takes about 2 hours to run
+
+And rerunning,
+
+3_launch_workflow.sh
+
+-> has this succeeded?  seems like it has not.
