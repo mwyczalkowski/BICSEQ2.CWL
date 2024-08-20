@@ -33,7 +33,7 @@ outputs:
     type: 'File[]?'
   - id: CNV
     outputSource:
-      - segmentation/CNV
+      segmentation/CNV
     type: File
 steps:
   - id: uniquereads
